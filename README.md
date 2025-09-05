@@ -2,7 +2,17 @@
 
 ## 🚀 Descripción del Proyecto
 
-Xafra-Ads es una aplicación web desarrollada en Spring Boot para la gestión y promoción de servicios digitales. La aplicación maneja procesos de suscripción automática, seguimiento de campañas publicitarias y confirmación de transacciones.
+Xafra-Ads es una **plataforma empresarial** que actúa como intermediario en el ecosistema de promoción de servicios digitales. Conecta **fuentes de tráfico** (traffic sources) con **operadores de telecomunicaciones** para facilitar la contratación de servicios y gestionar el ciclo completo de conversiones.
+
+### 🎯 Modelo de Negocio
+
+El sistema procesa **tracking IDs** de campañas publicitarias, gestiona redirecciones inteligentes con reemplazo de parámetros, y ejecuta **postbacks automáticos** para notificar conversiones a las fuentes de tráfico. Incluye módulos especializados para **BlackList management** y **auto-suscripción masiva**.
+
+### 📊 Estadísticas Activas
+- 🗄️ **2,970,685** campañas procesadas en producción
+- 🌐 **PostgreSQL 13.21** en Google Cloud Platform (34.28.245.62)
+- ⚡ **Multi-threading** para auto-suscripciones masivas
+- 🔒 **Encriptación AES** para parámetros sensibles
 
 ## 🏗️ Arquitectura del Sistema
 
@@ -25,15 +35,32 @@ Xafra-Ads es una aplicación web desarrollada en Spring Boot para la gestión y 
 
 ### Procesamiento de Ads
 ```
-GET  /ads/{param}/                     - Procesar ads con parámetros
-GET  /ads/confirm/{traking}            - Confirmar tracking
-POST /ads/v1/confirm/{apikey}/{traking} - Confirmar con API key
+GET  /ads/{param}/                     - Procesar ads con parámetros encriptados
+     Query params soportados: ClickId, clickId, ClickID, clickID, tracker
+     Ejemplo: /ads/ABC123/?clickId=TRACK_001&utm_source=google
+     
+GET  /ads/confirm/{tracking}            - Confirmar conversión y ejecutar postback
+POST /ads/v1/confirm/{apikey}/{tracking} - Confirmación autenticada con API key
 ```
 
-### Auto-Suscripción
+### Auto-Suscripción Masiva
 ```
-POST /v1/auto/subscribe/{productId}    - Auto suscribir producto
-GET  /v1/ping                          - Health check
+POST /v1/auto/subscribe/{productId}/{hour}/{timeSleep}/{source}/{limit}
+     - productId: ID del producto a suscribir
+     - hour: Hora de procesamiento (default: "23")
+     - timeSleep: Tiempo entre requests en ms (default: 10)
+     - source: Código fuente (default: "AA230")
+     - limit: Límite de números a procesar
+
+GET  /v1/ping                          - Health check (responde "pong")
+```
+
+### Testing y Monitoreo
+```
+GET  /v1/db/test-connection             - Test conectividad PostgreSQL
+GET  /v1/db/test-data-access            - Test acceso a datos JDBI
+GET  /v1/db/test-campaigns              - Validar tabla campaigns (2.9M+ registros)
+GET  /v1/db/health                      - Health check completo de BD
 ```
 
 ### Utilidades

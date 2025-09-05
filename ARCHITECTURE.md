@@ -2,66 +2,152 @@
 
 ## 📋 Visión General del Sistema
 
-Xafra-Ads es una aplicación empresarial de procesamiento de anuncios digitales construida con arquitectura modular, diseñada para escalabilidad y mantenibilidad.
+Xafra-Ads es una plataforma de promoción de servicios digitales que actúa como intermediario entre fuentes de tráfico (traffic sources) y operadores de telecomunicaciones. El sistema procesa campañas publicitarias, gestiona tracking IDs, y ejecuta postbacks de confirmación para cerrar el ciclo de conversión.
 
 ### 🎯 Objetivos Arquitectónicos
-- **Modularidad**: Separación clara de responsabilidades
-- **Escalabilidad**: Preparado para crecimiento horizontal
-- **Mantenibilidad**: Código limpio y bien estructurado
-- **Flexibilidad**: Fácil integración de nuevas funcionalidades
+- **Modularidad**: Separación clara de responsabilidades por módulos especializados
+- **Escalabilidad**: Preparado para alto volumen de transacciones (2.9M+ campañas)
+- **Mantenibilidad**: Código limpio y bien estructurado con patrones empresariales
+- **Flexibilidad**: Soporte para múltiples clientes, productos y campañas
+- **Reliability**: Sistema robusto de tracking y confirmación de conversiones
 
 ## 🏛️ Arquitectura de Alto Nivel
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    FRONTEND/CLIENTS                         │
-│            (Web, Mobile, API Consumers)                     │
+│              TRAFFIC SOURCES & CLIENTS                      │
+│       (Web, Mobile, API Consumers, Ad Networks)            │
 └─────────────────────┬───────────────────────────────────────┘
-                      │
+                      │ Campaign URLs with tracking params
 ┌─────────────────────▼───────────────────────────────────────┐
 │                 WEB LAYER                                   │
 │           webapp-xafra-ads (Spring Boot)                   │
 │  ┌─────────────────┬─────────────────┬─────────────────┐   │
-│  │  Controllers    │   Services      │    Config       │   │
-│  │  • AdsProcess   │   • ProcessAds  │   • Security    │   │
-│  │  • AutoSubs     │   • Validation  │   • Database    │   │
-│  │  • Utilities    │   • Business    │   • Logging     │   │
+│  │  Controllers    │   Processors    │    Security     │   │
+│  │  • AdsProcess   │   • ProcessAds  │   • AuthFilter  │   │
+│  │  • AutoSubs     │   • TrackingID  │   • API Keys    │   │
+│  │  │  Confirm     │   • Validation  │   • Encryption  │   │
+│  │  • Utilities    │   • Postbacks   │   • Headers     │   │
 │  └─────────────────┴─────────────────┴─────────────────┘   │
 └─────────────────────┬───────────────────────────────────────┘
-                      │
+                      │ Business Logic & Data Processing
 ┌─────────────────────▼───────────────────────────────────────┐
 │               BUSINESS LAYER                                │
 │              db-access (JDBI ORM)                          │
 │  ┌─────────────────┬─────────────────┬─────────────────┐   │
-│  │    Entities     │      DAOs       │     Cache       │   │
-│  │  • Campaign     │   • ICampaignBI │   • LocalCache  │   │
-│  │  • Product      │   • IProductBI  │   • CacheImpl   │   │
-│  │  • User         │   • IUserBI     │   • Memory      │   │
+│  │    Entities     │      DAOs       │   Business      │   │
+│  │  • Campaign     │   • ICampaignBI │   • BlackList   │   │
+│  │  • Product      │   • IProductBI  │   • AutoSubs    │   │
+│  │  • Customer     │   • IUserBI     │   • Postbacks   │   │
+│  │  • BlackList    │   • IBlackListBI│   • Tracking    │   │
 │  └─────────────────┴─────────────────┴─────────────────┘   │
 └─────────────────────┬───────────────────────────────────────┘
-                      │
+                      │ External Integrations & Postbacks  
 ┌─────────────────────▼───────────────────────────────────────┐
-│               UTILITY LAYER                                 │
-│            commons-help (Shared Utils)                     │
+│               INTEGRATION LAYER                             │
+│         Traffic Sources & Telecom Operators               │
 │  ┌─────────────────┬─────────────────┬─────────────────┐   │
-│  │   Encryption    │   Concurrency   │    Logging      │   │
-│  │  • AES/DES      │   • ThreadSafe  │   • LogContent  │   │
-│  │  • Base64       │   • Async       │   • Structured  │   │
-│  │  • Security     │   • Pool        │   • Rotation    │   │
+│  │   Postback APIs │   AutoSubscribe │   Blacklist     │   │
+│  │  • URL Replace  │   • CSV Process │   • MSISDN      │   │
+│  │  • <TRACKING>   │   • ENTEL API   │   • Validation  │   │
+│  │  • Async Calls  │   • Threading   │   • Filtering   │   │
 │  └─────────────────┴─────────────────┴─────────────────┘   │
 └─────────────────────┬───────────────────────────────────────┘
-                      │
+                      │ Data Persistence & Tracking Storage
 ┌─────────────────────▼───────────────────────────────────────┐
 │               DATA LAYER                                    │
-│            PostgreSQL 13 (GCP)                            │
+│            PostgreSQL 13 (GCP - 34.28.245.62)            │
 │  ┌─────────────────┬─────────────────┬─────────────────┐   │
-│  │    Tables       │    Indexes      │   Procedures    │   │
-│  │  • campaigns    │   • Performance │   • Business    │   │
-│  │  • products     │   • Search      │   • Analytics   │   │
-│  │  • users        │   • Foreign     │   • Reports     │   │
+│  │    Tables       │    Tracking     │   Operations    │   │
+│  │  • campaigns    │   • 2.9M+ recs  │   • CRUD        │   │
+│  │  • products     │   • Status mgmt │   • Bulk Ops    │   │
+│  │  • customers    │   • Timestamps  │   • Transactions│   │
+│  │  • blacklist    │   • Relations   │   • Indexing    │   │
+│  │  • xafra_camp   │   • Foreign     │   • Performance │   │
 │  └─────────────────┴─────────────────┴─────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+## 🔄 Flujo de Negocio Principal
+
+### 🎯 Workflow de Campaña Publicitaria
+
+```mermaid
+graph TD
+    A[Traffic Source] -->|Campaign URL + Tracking ID| B[/ads/{param}/]
+    B --> C{Decrypt & Validate}
+    C -->|Valid| D[Get Product Config]
+    C -->|Invalid| E[Error Response]
+    D --> F{Product Exists?}
+    F -->|No| G[Redirect Error]
+    F -->|Yes| H[Generate/Validate Tracking]
+    H --> I{Tracking ID Type}
+    I -->|External| J[Use Provided ID]
+    I -->|Internal| K[Generate UUID]
+    J --> L[Create Campaign Record]
+    K --> L
+    L --> M[Replace <TRAKING> in URL]
+    M --> N[Redirect to Success URL]
+    N --> O[User Completes Action]
+    O --> P[/ads/confirm/{tracking}]
+    P --> Q[Update Campaign Status]
+    Q --> R[Execute Postback to Source]
+    R --> S[Campaign Complete]
+```
+
+### 📊 Estructura de Datos Jerárquica
+
+```
+Customer (Cliente)
+├── Products (Productos del Cliente)
+│   ├── urlRedirectSuccess (URL de contratación)
+│   ├── urlRedirectPostBack (URL de postback)
+│   ├── methodPostBack (GET/POST)
+│   └── Campaigns (Campañas por Producto)
+│       ├── trackingId (ID de seguimiento)
+│       ├── productId (Relación al producto)
+│       ├── status (PROCESSING/PROCESSED)
+│       ├── statusPostBack (0/1)
+│       └── timestamps (Fechas de creación/actualización)
+```
+
+### 🔍 Tracking Parameters Soportados
+
+El sistema reconoce automáticamente los siguientes parámetros de tracking en las URLs:
+
+```java
+// Parámetros reconocidos (case-sensitive)
+"ClickId"   - Estándar de la industria
+"clickId"   - Variante camelCase  
+"ClickID"   - Variante uppercase
+"clickID"   - Variante mixta
+"tracker"   - Parámetro genérico
+```
+
+**Flujo de Reconocimiento**:
+1. Sistema recibe URL con query parameters
+2. Busca primer parámetro disponible de la lista anterior
+3. Extrae valor del tracking ID
+4. Procesa campaña con tracking ID identificado
+
+### 🎯 Módulos Especializados
+
+#### 🟢 Módulo BlackList
+**Propósito**: Control de números telefónicos (MSISDN) para prevenir duplicados
+**Funcionalidades**:
+- Validación pre-suscripción contra blacklist
+- Inserción automática en blacklist post-suscripción exitosa
+- Filtrado por productId para control granular
+- Soporte para diferentes tipos de blacklist
+
+#### 🔄 Módulo AutoSuscripción  
+**Propósito**: Procesamiento masivo automatizado de suscripciones
+**Características**:
+- Lectura de archivos CSV con números MSISDN
+- Procesamiento en threading para alta performance
+- Integración con API ENTEL para activación de servicios
+- Control de límites y horarios de procesamiento
+- Filtrado automático contra blacklist
 
 ## 🧩 Módulos del Sistema
 
@@ -144,31 +230,75 @@ public class StructuredLogger
 
 ## 🌐 API REST Design
 
-### 📊 Patrones de URL
+### 📊 Endpoints Principales
 
+#### 🎯 Procesamiento de Campañas
+```http
+GET  /ads/{param}/                      - Procesamiento principal de ads
+     - param: Parámetro encriptado con ID del producto
+     - Query params: tracking IDs (ClickId, clickId, tracker, etc.)
+     - Response: Redirect 302 a URL de contratación con tracking
+
+GET  /ads/confirm/{tracking}            - Confirmación de conversión
+     - tracking: ID de seguimiento de la campaña
+     - Response: Actualiza status campaña y ejecuta postback
+
+POST /ads/v1/confirm/{apikey}/{tracking} - Confirmación con autenticación
+     - apikey: Clave de API para autenticación
+     - tracking: ID de seguimiento
+     - Response: Confirmación autenticada con postback
 ```
-/v1/*                    - API versionada principal
-/ads/*                   - Procesamiento de anuncios
-/util/*                  - Servicios utilitarios
-/adsDep/*               - Dependencias y debug
+
+#### 🔄 Auto-Suscripción Masiva
+```http
+POST /v1/auto/subscribe/{productId}     - Suscripción automática básica
+POST /v1/auto/subscribe/{productId}/{hour}/{time}/{source}/{limit}
+     - productId: ID del producto a suscribir
+     - hour: Hora de procesamiento (default: "23")
+     - time: Tiempo de espera entre requests (default: 10)
+     - source: Código fuente (default: "AA230")  
+     - limit: Límite de números a procesar
+
+GET  /v1/ping                           - Health check (responde "pong")
+```
+
+#### 🛠️ Servicios Utilitarios
+```http
+POST /util/encryption                   - Servicio de encriptación AES
+     - Body: Texto a encriptar
+     - Response: Texto encriptado
+
+GET  /util/get                          - Obtener URL base del sistema
+     - Response: URL base configurada
+```
+
+#### 🔍 Testing y Desarrollo (DatabaseTestController)
+```http
+GET  /v1/db/test-connection             - Test conectividad BD
+GET  /v1/db/test-data-access            - Test acceso a datos
+GET  /v1/db/test-campaigns              - Test tabla campaigns (2.9M+ registros)
+GET  /v1/db/health                      - Health check completo BD
 ```
 
 ### 🔄 Flujo de Procesamiento
 
 ```mermaid
 graph TD
-    A[Client Request] --> B[Controller Layer]
-    B --> C{Validation}
-    C -->|Valid| D[Service Layer]
-    C -->|Invalid| E[Error Response]
-    D --> F[Business Logic]
-    F --> G[Database Layer]
-    G --> H[Cache Check]
-    H -->|Hit| I[Return Cached]
-    H -->|Miss| J[Database Query]
-    J --> K[Update Cache]
-    K --> L[Transform Response]
-    L --> M[JSON Response]
+    A[Client Request] --> B[AdsProcessController]
+    B --> C{Tracking Parameter Detection}
+    C -->|Found: ClickId/tracker| D[ProcessAds Service]
+    C -->|Not Found| E[Generate Internal UUID]
+    D --> F[Decrypt Product Parameter]
+    F --> G{Product Validation}
+    G -->|Valid| H[Campaign Creation/Update]
+    G -->|Invalid| I[Error Response]
+    H --> J[URL Replacement: <TRAKING>]
+    J --> K[Redirect 302 to Success URL]
+    K --> L[User Action Completion]
+    L --> M[Confirm Endpoint Call]
+    M --> N[Update Campaign Status]
+    N --> O[Execute Postback to Source]
+    O --> P[Campaign Completed]
 ```
 
 ## 🔧 Configuración y Deployment
@@ -178,25 +308,56 @@ graph TD
 **Desarrollo**:
 ```properties
 spring.profiles.active=dev
-database.url=jdbc:postgresql://localhost:5432/xafra_dev
 server.port=8083
-logging.level=DEBUG
+logging.level.root=DEBUG
+logging.level.com.develop.job=DEBUG
+
+# Database Development (Local/Testing)
+spring.datasource.url=jdbc:postgresql://localhost:5432/xafra_dev
+spring.datasource.username=dev_user
+spring.datasource.password=dev_password
 ```
 
 **Producción**:
 ```properties
 spring.profiles.active=prod
-database.url=jdbc:postgresql://34.28.245.62:5432/xafra-ads
 server.port=8080
-logging.level=INFO
+logging.level.root=INFO
+logging.level.com.develop.job=INFO
+
+# Database Production (GCP)
+spring.datasource.url=jdbc:postgresql://34.28.245.62:5432/xafra-ads
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# Database Pool Configuration
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=20000
+spring.datasource.hikari.idle-timeout=300000
+
+# JDBI Configuration
+jdbi.autoCommit=false
+jdbi.transactionIsolation=READ_COMMITTED
 ```
 
 ### 📈 Métricas y Monitoreo
 
 **Health Checks**:
-- `/v1/ping` - Application health
-- `/actuator/health` - Spring Boot health
-- `/actuator/metrics` - Application metrics
+- `/v1/ping` - Application health (responde "pong")
+- `/v1/db/health` - Database connectivity y performance
+- `/v1/db/test-campaigns` - Validación datos críticos (2,970,685 campañas)
+- Spring Boot Actuator endpoints disponibles
+
+**Database Metrics**:
+```sql
+-- Estadísticas actuales validadas
+SELECT COUNT(*) FROM campaigns;          -- 2,970,685 registros
+SELECT version();                        -- PostgreSQL 13.21
+SELECT current_database();               -- xafra-ads
+SELECT current_user;                     -- Usuario de conexión
+```
 
 **Logging Strategy**:
 - Structured JSON logging
