@@ -1,0 +1,111 @@
+package com.develop.job.ads.api;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.develop.job.ads.impls.ProcessAds;
+import com.develop.job.ads.impls.ProcessAdsConfirm;
+import com.develop.job.ads.to.AdsRequest;
+import com.develop.job.tools.AuthenticationPathFilter;
+import com.develop.job.tools.LogManager;
+import com.develop.job.tools.Utils;
+
+@RestController
+@RequestMapping(value = "/ads")
+public class AdsProcessController {
+
+	protected final Logger log = LoggerFactory.getLogger(AdsProcessController.class);
+
+	@Autowired
+	private ProcessAds process;
+	@Autowired
+	private ProcessAdsConfirm confirm;
+
+	@Autowired
+	private AuthenticationPathFilter filter;
+
+	@GetMapping("/{param}/")
+	public void ads(@PathVariable("param") String params, @RequestHeader HttpHeaders headers,
+			@RequestParam Map<String, String> allParams, HttpServletRequest httpRequest,
+			HttpServletResponse httpResponse) {
+		LogManager.setLogName("xafra-ads-process");
+		String uuid = Utils.getUUID();
+		log.info("[{}] parametros allParams={}", uuid, allParams);
+
+		process.setUUid(uuid);
+		process.process(new AdsRequest(params, trakingRecover(allParams, uuid), httpRequest, httpResponse));
+	}
+
+	private String trakingRecover(Map<String, String> trakings, String uuid) {
+		String traking = "";
+		Optional<String> key = listKeysTraking().stream()
+				.filter(s -> trakings.get(s) != null && !"".equals(trakings.get(s))).findFirst();
+		traking = key.isPresent() ? trakings.get(key.get()) : "";
+
+		return traking;
+	}
+
+	private static List<String> listKeysTraking() {
+		final List<String> traking = new ArrayList<>();
+		traking.add("ClickId");
+		traking.add("clickId");
+		traking.add("ClickID");
+		traking.add("clickID");
+		traking.add("tracker");
+		return traking;
+	}
+
+	@SuppressWarnings("unused")
+	private void header(HttpHeaders headers) {
+		headers.forEach((k, v) -> {
+			log.info("key {}, value {}", k, v);
+		});
+	}
+
+	@GetMapping("/confirm/{traking}")
+	public ResponseEntity<?> adsComfirm(@PathVariable("traking") String traking, HttpServletRequest httpRequest,
+			HttpServletResponse httpResponse) {
+		try {
+			LogManager.setLogName("xafra-ads-confirm");
+			if (traking != null)
+				confirm.process(new AdsRequest(traking, httpRequest, httpResponse));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("OK");
+	}
+
+	@RequestMapping(value = "/v1/confirm/{apikey}/{traking}", method = { RequestMethod.GET, RequestMethod.POST })
+	public ResponseEntity<?> adsComfirmV1(@PathVariable("apikey") String apikey,
+			@PathVariable("traking") String traking, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		try {
+			LogManager.setLogName("xafra-ads-confirm");
+			filter.autorization(httpRequest, apikey);
+			if (traking != null)
+				confirm.process(new AdsRequest(traking, httpRequest, httpResponse));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("OK");
+	}
+
+}

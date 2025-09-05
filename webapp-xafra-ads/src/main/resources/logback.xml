@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true">
+
+	<property name="HOME_LOG" value="/logs" />
+
+	<appender name="FILE-THREAD"
+		class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>threadName</key>
+			<defaultValue>StartApplication</defaultValue>
+		</discriminator>
+
+		<sift>
+			<appender name="FILE-${threadName}"
+				class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${HOME_LOG}/${threadName}.log</file>
+
+				<encoder
+					class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<Pattern>
+						%d{ISO8601} : %-5p -> [%c:%L] -> %m%n
+					</Pattern>
+				</encoder>
+
+				<rollingPolicy
+					class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<FileNamePattern>
+						${HOME_LOG}/${threadName}.%d{yyyy-MM-dd_HH}.log.gz
+					</FileNamePattern>
+					<maxHistory>40</maxHistory>
+				</rollingPolicy>
+
+<!-- 				<triggeringPolicy -->
+<!-- 					class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> -->
+<!-- 					<MaxFileSize>800MB</MaxFileSize> -->
+<!-- 				</triggeringPolicy> -->
+
+			</appender>
+
+		</sift>
+	</appender>
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%d{ISO8601} : %-5p->[%c:%L] -> %m%n
+			</Pattern>
+		</layout>
+	</appender>
+
+	<contextName>queue-logger</contextName>
+	<jmxConfigurator />
+	
+	<logger name="com.google.common" level="error" />
+	<logger name="org.jdbi.v3.core" level="error" />	
+	<logger name="org.postgresql" level="error" />
+	<logger name="java.net" level="error" />
+	
+	<logger name="org.springframework" level="error" />
+	<logger name="com.develop" level="info" />
+	<logger name="org.apache" level="error" />
+
+	<logger name="com.develop" level="info" additivity="false">
+		<appender-ref ref="FILE-THREAD" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<root level="info">
+<!-- 		<appender-ref ref="STDOUT" /> -->
+		<appender-ref ref="FILE-THREAD" />
+	</root>
+</configuration> 
