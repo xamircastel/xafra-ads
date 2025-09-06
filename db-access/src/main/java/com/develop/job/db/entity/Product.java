@@ -17,6 +17,10 @@ public class Product {
 	private String methodPostBack;
 	private String bodyPostBack;
 	
+	// ===== NUEVOS CAMPOS: PAÍS Y OPERADOR =====
+	private String country;      // País del producto
+	private String operator;     // Operador móvil asociado
+	
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(Integer.toHexString(hashCode())).append("@Product[id=");
@@ -29,6 +33,8 @@ public class Product {
 		b.append(", urlRedirectPostBack=").append(urlRedirectPostBack);
 		b.append(", methodPostBack=").append(methodPostBack);
 		b.append(", bodyPostBack=").append(bodyPostBack);
+		b.append(", country=").append(country);
+		b.append(", operator=").append(operator);
 		b.append("]");
 		return b.toString();
 	}

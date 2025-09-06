@@ -28,8 +28,8 @@ public interface ICampaignBI {
 	@RegisterFieldMapper(Campaign.class)
 	public List<Campaign> getAllCampainByProductId(@Bind("product_id") Long id);
 
-	@SqlUpdate("insert into campaign(id_product,traking,status,uuid,xafra_tracking_id) "
-			+ "values (:productId, :traking, :status, :uuid, :xafraTrackingId)")
+	@SqlUpdate("insert into campaign(id_product,traking,status,uuid,xafra_tracking_id,country,operator) "
+			+ "values (:productId, :traking, :status, :uuid, :xafraTrackingId, :country, :operator)")
 	public void insert(@BindBean Campaign campain);
 
 	@SqlUpdate("update campaign set modification_date= CURRENT_TIMESTAMP, status =:status where id=:id")

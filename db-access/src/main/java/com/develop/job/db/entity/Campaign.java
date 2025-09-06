@@ -22,6 +22,10 @@ public class Campaign {
 	private Integer statusPostBack;
 	private String xafraTrackingId;
 	
+	// ===== NUEVOS CAMPOS: PAÍS Y OPERADOR =====
+	private String country;      // País de la campaña
+	private String operator;     // Operador móvil
+	
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(Integer.toHexString(hashCode()));
@@ -33,6 +37,8 @@ public class Campaign {
 		b.append(", status=").append(status);
 		b.append(", uuid=").append(uuid);
 		b.append(", xafraTrackingId=").append(xafraTrackingId);
+		b.append(", country=").append(country);
+		b.append(", operator=").append(operator);
 		b.append("]");
 		return b.toString();
 	}

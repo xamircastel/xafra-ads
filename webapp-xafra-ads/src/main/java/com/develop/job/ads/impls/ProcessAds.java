@@ -77,7 +77,7 @@ public class ProcessAds extends AbstractProcess<AdsRequest> {
 	private void insertTraking(ExecutorService threadPool, AdsRequest event, Product product) {
 		CallProcessTraking call = new CallProcessTraking();
 		call.setCampaing(buildCampaign(product.getIdProduct(), event.getTrakingId(),
-				StatusCampain.PROCESSING.getStatus(), getUUID()));
+				StatusCampain.PROCESSING.getStatus(), getUUID(), product));
 		call.setCampainBo(campainBo);
 		threadPool.submit(call);
 	}
@@ -133,12 +133,19 @@ public class ProcessAds extends AbstractProcess<AdsRequest> {
 		return url;
 	}
 
-	private Campaign buildCampaign(Long pId, String traking, int status, String uuid) {
+	private Campaign buildCampaign(Long pId, String traking, int status, String uuid, Product product) {
 		Campaign campaign = new Campaign();
 		campaign.setProductId(pId);
 		campaign.setTraking(traking);
 		campaign.setStatus(status);
 		campaign.setUuid(uuid);
+		
+		// Asignar país y operador desde el producto
+		if (product != null) {
+			campaign.setCountry(product.getCountry());
+			campaign.setOperator(product.getOperator());
+		}
+		
 		return campaign;
 	}
 
