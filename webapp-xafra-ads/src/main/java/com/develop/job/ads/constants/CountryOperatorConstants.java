@@ -18,9 +18,10 @@ public class CountryOperatorConstants {
     public static final String ARGENTINA = "AR";
     public static final String ECUADOR = "EC";
     public static final String BRASIL = "BR";
+    public static final String COSTA_RICA = "CR";
 
     public static final List<String> SUPPORTED_COUNTRIES = Arrays.asList(
-        PERU, COLOMBIA, CHILE, MEXICO, ARGENTINA, ECUADOR, BRASIL
+        PERU, COLOMBIA, CHILE, MEXICO, ARGENTINA, ECUADOR, BRASIL, COSTA_RICA
     );
 
     // Operadores por país
@@ -60,6 +61,11 @@ public class CountryOperatorConstants {
         // Brasil
         OPERATORS_BY_COUNTRY.put(BRASIL, Arrays.asList(
             "Vivo", "TIM", "Claro", "Oi"
+        ));
+        
+        // Costa Rica
+        OPERATORS_BY_COUNTRY.put(COSTA_RICA, Arrays.asList(
+            "Kolbi", "Movistar", "Claro"
         ));
     }
 

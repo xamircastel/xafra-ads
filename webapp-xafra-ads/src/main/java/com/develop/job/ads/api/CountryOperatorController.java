@@ -83,4 +83,31 @@ public class CountryOperatorController {
         
         return ResponseEntity.ok(response);
     }
+    
+    /**
+     * Información específica para Costa Rica - Kolbi
+     */
+    @GetMapping("/costa-rica-kolbi")
+    public ResponseEntity<Map<String, Object>> getCostaRicaKolbiInfo() {
+        Map<String, Object> response = new HashMap<>();
+        
+        response.put("country_code", "CR");
+        response.put("country_name", "Costa Rica");
+        response.put("operator", "Kolbi");
+        response.put("short_tracking_enabled", true);
+        response.put("description", "Configuración para tracking corto en Costa Rica - Kolbi");
+        Map<String, String> exampleCustomer = new HashMap<>();
+        exampleCustomer.put("name", "Customer Costa Rica");
+        exampleCustomer.put("country", "CR");
+        exampleCustomer.put("operator", "Kolbi");
+        response.put("example_customer", exampleCustomer);
+        
+        Map<String, String> exampleProduct = new HashMap<>();
+        exampleProduct.put("name", "SMS Premium CR");
+        exampleProduct.put("country", "CR");
+        exampleProduct.put("operator", "Kolbi");
+        response.put("example_product", exampleProduct);
+        
+        return ResponseEntity.ok(response);
+    }
 }

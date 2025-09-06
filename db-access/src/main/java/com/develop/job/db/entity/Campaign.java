@@ -26,6 +26,10 @@ public class Campaign {
 	private String country;      // País de la campaña
 	private String operator;     // Operador móvil
 	
+	// ===== CAMPO PARA TRACKING CORTO (COSTA RICA - KOLBI) =====
+	@ColumnName("short_tracking")
+	private String shortTracking; // Tracking corto para SMS (CR-Kolbi)
+	
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append(Integer.toHexString(hashCode()));
@@ -39,6 +43,7 @@ public class Campaign {
 		b.append(", xafraTrackingId=").append(xafraTrackingId);
 		b.append(", country=").append(country);
 		b.append(", operator=").append(operator);
+		b.append(", shortTracking=").append(shortTracking);
 		b.append("]");
 		return b.toString();
 	}

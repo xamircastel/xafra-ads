@@ -28,8 +28,8 @@ public interface ICampaignBI {
 	@RegisterFieldMapper(Campaign.class)
 	public List<Campaign> getAllCampainByProductId(@Bind("product_id") Long id);
 
-	@SqlUpdate("insert into campaign(id_product,traking,status,uuid,xafra_tracking_id,country,operator) "
-			+ "values (:productId, :traking, :status, :uuid, :xafraTrackingId, :country, :operator)")
+	@SqlUpdate("insert into campaign(id_product,traking,status,uuid,xafra_tracking_id,country,operator,short_tracking) "
+			+ "values (:productId, :traking, :status, :uuid, :xafraTrackingId, :country, :operator, :shortTracking)")
 	public void insert(@BindBean Campaign campain);
 
 	@SqlUpdate("update campaign set modification_date= CURRENT_TIMESTAMP, status =:status where id=:id")
@@ -49,4 +49,13 @@ public interface ICampaignBI {
 	@SqlQuery("Select * from campaign where xafra_tracking_id=:tracking and status=2")
 	@RegisterFieldMapper(Campaign.class)
 	public Campaign getCampainByXafraTracking(@Bind("tracking") String tracking);
+	
+	// ===== MÉTODOS PARA TRACKING CORTO (COSTA RICA - KOLBI) =====
+	
+	@SqlUpdate("update campaign set short_tracking=:shortTracking, modification_date=CURRENT_TIMESTAMP where traking=:traking")
+	public void updateShortTracking(@Bind("traking") String traking, @Bind("shortTracking") String shortTracking);
+	
+	@SqlQuery("Select * from campaign where short_tracking=:shortTracking")
+	@RegisterFieldMapper(Campaign.class)
+	public Campaign getCampaignByShortTracking(@Bind("shortTracking") String shortTracking);
 }
