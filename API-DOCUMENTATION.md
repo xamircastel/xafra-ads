@@ -94,20 +94,23 @@ Content-Type: application/json
 }
 ```
 
-### Crear Nueva Compra
+### Servicio de Encriptación (Customer ID)
 ```bash
-POST https://apis.xafra-ads.com/path/newbuy
-Content-Type: application/json
+POST https://apis.xafra-ads.com/util/encryption
+Content-Type: text/plain
+user: xafra2-ads-encrytion3
 
-{
-    "customer_id": "CUST001",
-    "product_id": "PROD001",
-    "amount": 10.99,
-    "currency": "USD",
-    "phone": "+50612345678",
-    "operator": "kolbi",
-    "country": "costa_rica"
-}
+# Body (texto plano):
+14
+
+# Respuesta: Texto encriptado para usar en URLs
+```
+
+**Importante:** Esta API requiere:
+- **Body**: customer_id como texto plano (ej: "14")
+- **Header 'user'**: xafra2-ads-encrytion3 (autenticación)
+- **Content-Type**: text/plain
+- **Respuesta**: String encriptado listo para URLs de campaña
 ```
 
 ## 🔒 Autenticación

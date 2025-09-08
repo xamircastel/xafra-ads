@@ -275,18 +275,29 @@
 			"name": "🔧 Utilidades",
 			"item": [
 				{
-					"name": "Servicio de Encriptación",
+					"name": "Servicio de Encriptación (Forma Correcta)",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "text/plain",
+								"description": "Tipo de contenido en texto plano"
+							},
+							{
+								"key": "user",
+								"value": "xafra2-ads-encrytion3",
+								"description": "Header de autenticación requerido"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"text\": \"datos_a_encriptar\",\n    \"key\": \"encryption_key\"\n}"
+							"raw": "14",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/util/encryption",
@@ -298,7 +309,7 @@
 								"encryption"
 							]
 						},
-						"description": "Servicio de encriptación AES para parámetros sensibles"
+						"description": "Encriptación AES para customer_id. Envía el customer_id como texto plano en el body y devuelve el valor encriptado.\n\n**Parámetros:**\n- Body: customer_id (ej: \"14\")\n- Header 'user': xafra2-ads-encrytion3\n- Content-Type: text/plain\n\n**Respuesta:** Texto encriptado que puede usarse en URLs de campañas"
 					},
 					"response": []
 				},
