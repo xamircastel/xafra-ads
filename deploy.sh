@@ -1,7 +1,19 @@
 #!/bin/bash
 
 # 🚀 XAFRA-ADS Deployment Script
-# Automatiza el despliegue completo en Google Cloud Run
+# Automatiza el despliegue completo eecho ""
+echo "🎉 ¡Despliegue completado exitosamente!"
+echo "=================================================="
+echo "🌐 URLs de Producción:"
+echo "   📍 Dominio Principal: https://apis.xafra-ads.com"
+echo "   📍 Cloud Run Directo: $SERVICE_URL"
+echo ""
+echo "🔍 Health Checks:"
+echo "   🩺 Health: https://apis.xafra-ads.com/actuator/health"
+echo "   🗄️ Database: https://apis.xafra-ads.com/v1/db/health"
+echo ""
+echo "📋 Postman Collection: XAFRA-ADS-APIs-Collection.postman_collection.json"
+echo "📊 Logs: gcloud logging read \"resource.type=cloud_run_revision AND resource.labels.service_name=$SERVICE_NAME\" --limit=50"le Cloud Run
 # Autor: XafraTech Team
 # Fecha: 2025-09-08
 

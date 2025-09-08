@@ -1,0 +1,570 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "XAFRA-ADS APIs Collection",
+		"description": "Collection completa de APIs para XAFRA-ADS Motor de Publicidad\n\n🌐 **Dominio:** apis.xafra-ads.com\n📊 **Capacidad:** 10,000+ visitas diarias\n🔒 **Base de Datos:** PostgreSQL en GCP\n\n**Endpoints principales:**\n- Procesamiento de Ads\n- Auto-suscripción masiva\n- Testing y monitoreo\n- Utilidades y compras\n\n**Fecha:** Septiembre 2025\n**Versión:** v2.1.0-production",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "🚀 Health Checks",
+			"item": [
+				{
+					"name": "Spring Boot Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Health check de Spring Boot Actuator - Endpoint principal para verificar el estado de la aplicación"
+					},
+					"response": []
+				},
+				{
+					"name": "Database Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/db/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"db",
+								"health"
+							]
+						},
+						"description": "Health check completo de la base de datos PostgreSQL"
+					},
+					"response": []
+				},
+				{
+					"name": "Simple Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/ping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"ping"
+							]
+						},
+						"description": "Health check simple que responde 'pong'"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para verificar el estado de la aplicación y base de datos"
+		},
+		{
+			"name": "📱 Procesamiento de Ads",
+			"item": [
+				{
+					"name": "Procesar Ad con Parámetros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/ABC123/?clickId=TRACK_001&utm_source=google&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"ABC123",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "TRACK_001",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "google",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "Procesar ads con parámetros encriptados. Soporta: ClickId, clickId, ClickID, clickID, tracker"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar Conversión",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/confirm/TRACK_001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"confirm",
+								"TRACK_001"
+							]
+						},
+						"description": "Confirmar conversión y ejecutar postback automático"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar Conversión con API Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"conversion_data\": \"additional_info\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ads/v1/confirm/{{api_key}}/TRACK_001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"v1",
+								"confirm",
+								"{{api_key}}",
+								"TRACK_001"
+							]
+						},
+						"description": "Confirmación autenticada con API key"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para el procesamiento de anuncios y tracking de conversiones"
+		},
+		{
+			"name": "🤖 Auto-Suscripción Masiva",
+			"item": [
+				{
+					"name": "Iniciar Auto-Suscripción",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_numbers\": [\"+50612345678\", \"+50687654321\"],\n    \"campaign_id\": \"CAMP001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/auto/subscribe/PROD001/23/10/AA230/250",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"auto",
+								"subscribe",
+								"PROD001",
+								"23",
+								"10",
+								"AA230",
+								"250"
+							]
+						},
+						"description": "Auto-suscripción masiva con multi-threading\n\nParámetros:\n- productId: ID del producto (PROD001)\n- hour: Hora de procesamiento (23 = 11 PM)\n- timeSleep: Tiempo entre requests en ms (10)\n- source: Código fuente (AA230)\n- limit: Límite de números a procesar (250)"
+					},
+					"response": []
+				}
+			],
+			"description": "Sistema de auto-suscripción masiva con multi-threading"
+		},
+		{
+			"name": "🔍 Testing y Base de Datos",
+			"item": [
+				{
+					"name": "Test Conexión BD",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/db/test-connection",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"db",
+								"test-connection"
+							]
+						},
+						"description": "Probar conectividad con PostgreSQL"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Acceso a Datos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/db/test-data-access",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"db",
+								"test-data-access"
+							]
+						},
+						"description": "Probar acceso a datos con JDBI"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Campañas (2.9M+ registros)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/db/test-campaigns",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"db",
+								"test-campaigns"
+							]
+						},
+						"description": "Validar tabla campaigns con 2,970,685+ registros"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para testing de conectividad y acceso a datos"
+		},
+		{
+			"name": "🔧 Utilidades",
+			"item": [
+				{
+					"name": "Servicio de Encriptación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"datos_a_encriptar\",\n    \"key\": \"encryption_key\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/util/encryption",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"util",
+								"encryption"
+							]
+						},
+						"description": "Servicio de encriptación AES para parámetros sensibles"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener URL Base",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/util/get",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"util",
+								"get"
+							]
+						},
+						"description": "Obtener URL base del sistema"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de utilidades para encriptación y configuración"
+		},
+		{
+			"name": "🛒 Sistema de Compras",
+			"item": [
+				{
+					"name": "Health Check Compras",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/path/ping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"path",
+								"ping"
+							]
+						},
+						"description": "Health check del sistema de compras"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Compra",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\": \"CUST001\",\n    \"product_id\": \"PROD001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/path/buy",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"path",
+								"buy"
+							]
+						},
+						"description": "Obtener información de compra existente"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Nueva Compra",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\": \"CUST001\",\n    \"product_id\": \"PROD001\",\n    \"amount\": 10.99,\n    \"currency\": \"USD\",\n    \"phone\": \"+50612345678\",\n    \"operator\": \"kolbi\",\n    \"country\": \"costa_rica\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/path/newbuy",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"path",
+								"newbuy"
+							]
+						},
+						"description": "Crear nueva compra en el sistema"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de compras y transacciones"
+		},
+		{
+			"name": "🔧 Desarrollo y Debug",
+			"item": [
+				{
+					"name": "Ver Headers HTTP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "XAFRA-ADS-Testing/1.0"
+							},
+							{
+								"key": "X-Test-Header",
+								"value": "debug-mode"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/adsDep/headers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adsDep",
+								"headers"
+							]
+						},
+						"description": "Ver todos los headers HTTP recibidos - útil para debugging"
+					},
+					"response": []
+				},
+				{
+					"name": "Procesar Parámetros Debug",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param1\": \"value1\",\n    \"param2\": \"value2\",\n    \"debug\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/adsDep/p/TEST_PARAM",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"adsDep",
+								"p",
+								"TEST_PARAM"
+							]
+						},
+						"description": "Procesar parámetros en modo debug"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para desarrollo, testing y debugging"
+		},
+		{
+			"name": "🌐 Web Interface",
+			"item": [
+				{
+					"name": "Página Principal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Página principal de la aplicación web"
+					},
+					"response": []
+				}
+			],
+			"description": "Interface web de la aplicación"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script que se ejecuta antes de cada request",
+					"console.log('🚀 Ejecutando request a XAFRA-ADS API');",
+					"console.log('🌐 Base URL:', pm.variables.get('base_url'));",
+					"",
+					"// Agregar timestamp a las requests",
+					"pm.globals.set('request_timestamp', new Date().toISOString());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script que se ejecuta después de cada response",
+					"",
+					"// Validaciones básicas para todas las requests",
+					"pm.test('✅ Status code is success', function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+					"});",
+					"",
+					"pm.test('⚡ Response time is acceptable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(10000); // 10 segundos",
+					"});",
+					"",
+					"// Log del resultado",
+					"console.log('✅ Response Status:', pm.response.status);",
+					"console.log('⏱️ Response Time:', pm.response.responseTime + 'ms');",
+					"console.log('📊 Response Size:', pm.response.responseSize + ' bytes');"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://apis.xafra-ads.com",
+			"description": "URL base de producción con dominio personalizado",
+			"type": "string"
+		},
+		{
+			"key": "base_url_cloudrun",
+			"value": "https://xafra-ads-697203931362.us-central1.run.app",
+			"description": "URL directa de Cloud Run (backup)",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "your_api_key_here",
+			"description": "API Key para endpoints autenticados",
+			"type": "string"
+		},
+		{
+			"key": "environment",
+			"value": "production",
+			"description": "Ambiente actual (production/staging/development)",
+			"type": "string"
+		}
+	]
+}

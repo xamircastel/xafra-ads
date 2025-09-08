@@ -1,4 +1,10 @@
-# 🚀 XAFRA-ADS - Motor de Publicidad
+# 🚀 XAFR## 🌐 **En Producción**
+
+- **URL Principal:** https://apis.xafra-ads.com
+- **URL Cloud Run:** https://xafra-ads-697203931362.us-central1.run.app
+- **Health Check:** https://apis.xafra-ads.com/actuator/health
+- **Plataforma:** Google Cloud Run con dominio personalizado
+- **Estado:** ✅ ACTIVO- Motor de Publicidad
 
 [![Deployment Status](https://img.shields.io/badge/Deployment-✅%20LIVE-brightgreen)](https://xafra-ads-697203931362.us-central1.run.app)
 [![Platform](https://img.shields.io/badge/Platform-Google%20Cloud%20Run-blue)](https://cloud.google.com/run)
@@ -141,6 +147,7 @@ POST /path/newbuy                      - Crear nueva compra
 - 🌐 **PostgreSQL 13.21** en Google Cloud Platform (34.28.245.62)
 - ⚡ **Multi-threading** para auto-suscripciones masivas
 - 🔒 **Encriptación AES** para parámetros sensibles
+- 🌐 **Dominio personalizado:** apis.xafra-ads.com
 
 ## 🔧 **Comandos Útiles**
 

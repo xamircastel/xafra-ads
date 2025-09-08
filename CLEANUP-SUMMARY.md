@@ -100,8 +100,10 @@ curl https://xafra-ads-697203931362.us-central1.run.app/v1/db/health
 - **Código fuente**: Todos los módulos Java
 - **Configuración**: Properties de producción
 - **Build**: POM files optimizados
-- **Deployment**: Dockerfile y scripts
-- **Documentación**: Completa y actualizada
+- **Deployment**: Dockerfile y scripts actualizados
+- **Documentación**: Completa y actualizada con dominio personalizado
+- **APIs**: Collection completa de Postman
+- **Dominio personalizado**: apis.xafra-ads.com configurado
 
 ### 🗑️ Elementos Eliminados/Organizados:
 - **Logs antiguos**: Movidos a documentación estructurada

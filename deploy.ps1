@@ -104,8 +104,15 @@ $SERVICE_URL = gcloud run services describe $SERVICE_NAME --region=$REGION --for
 Write-Host ""
 Write-Host "🎉 ¡Despliegue completado exitosamente!" -ForegroundColor Green
 Write-Host "==================================================" -ForegroundColor Green
-Write-Host "📍 URL del servicio: $SERVICE_URL" -ForegroundColor Cyan
-Write-Host "🔍 Health check: $SERVICE_URL/actuator/health" -ForegroundColor Cyan
+Write-Host "🌐 URLs de Producción:" -ForegroundColor Cyan
+Write-Host "   📍 Dominio Principal: https://apis.xafra-ads.com" -ForegroundColor Green
+Write-Host "   📍 Cloud Run Directo: $SERVICE_URL" -ForegroundColor White
+Write-Host ""
+Write-Host "🔍 Health Checks:" -ForegroundColor Cyan
+Write-Host "   🩺 Health: https://apis.xafra-ads.com/actuator/health" -ForegroundColor Green
+Write-Host "   🗄️ Database: https://apis.xafra-ads.com/v1/db/health" -ForegroundColor Green
+Write-Host ""
+Write-Host "📋 Postman Collection: XAFRA-ADS-APIs-Collection.postman_collection.json" -ForegroundColor Yellow
 Write-Host "📊 Logs: gcloud logging read `"resource.type=cloud_run_revision AND resource.labels.service_name=$SERVICE_NAME`" --limit=50" -ForegroundColor White
 Write-Host ""
 Write-Host "💡 Para verificar el estado:" -ForegroundColor Yellow

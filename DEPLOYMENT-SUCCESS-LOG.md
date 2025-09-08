@@ -4,7 +4,9 @@
 
 ### 📋 RESUMEN DEL DESPLIEGUE EXITOSO
 
-**URL de Producción:** https://xafra-ads-697203931362.us-central1.run.app
+**URL Principal:** https://apis.xafra-ads.com  
+**URL Cloud Run:** https://xafra-ads-697203931362.us-central1.run.app  
+**Dominio Personalizado:** ✅ Configurado en Google Cloud
 
 ### 🔧 CONFIGURACIÓN FINAL QUE FUNCIONA
 

@@ -5,10 +5,14 @@
 ```
 xafra-ads-vf/
 ├── 📄 README.md                          # Documentación principal
-├── 🚀 deploy.sh                          # Script de despliegue (Linux/Mac)
+├── � API-DOCUMENTATION.md               # Documentación completa de APIs
+├── 📋 XAFRA-ADS-APIs-Collection.postman_collection.json # Collection Postman
+├── �🚀 deploy.sh                          # Script de despliegue (Linux/Mac)
 ├── 🚀 deploy.ps1                         # Script de despliegue (Windows)
+├── 📦 backup-project.ps1                 # Script de respaldo automático
 ├── 📋 DEPLOYMENT-SUCCESS-LOG.md          # Log del despliegue exitoso
 ├── 📋 PROJECT-STRUCTURE.md               # Este archivo
+├── 📋 CLEANUP-SUMMARY.md                 # Resumen de organización
 ├── 🗃️ DatabaseConnectivityTest.java      # Test de conectividad BD
 │
 └── webapp-xafra-ads/                     # 📦 Aplicación principal
@@ -33,6 +37,18 @@ xafra-ads-vf/
     └── WEB-INF/
         └── classes/                       # Clases compiladas
 ```
+
+## 🌐 **URLs de Producción**
+
+### 🎯 **Dominio Principal (Recomendado)**
+- **API Base**: https://apis.xafra-ads.com
+- **Health Check**: https://apis.xafra-ads.com/actuator/health
+- **Database Test**: https://apis.xafra-ads.com/v1/db/health
+- **Postman Collection**: Importar XAFRA-ADS-APIs-Collection.postman_collection.json
+
+### ☁️ **Cloud Run Directo (Backup)**
+- **URL Directa**: https://xafra-ads-697203931362.us-central1.run.app
+- **Health Check**: https://xafra-ads-697203931362.us-central1.run.app/actuator/health
 
 ## 🔧 Componentes Clave
 
