@@ -1,0 +1,26 @@
+runtime: custom
+env: flex
+service: default
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 2
+  cool_down_period_sec: 120
+  cpu_utilization:
+    target_utilization: 0.6
+
+resources:
+  cpu: 1
+  memory_gb: 1.7
+  disk_size_gb: 10
+
+network:
+  session_affinity: false
+
+env_variables:
+  DB_HOST: "34.28.245.62"
+  DB_PORT: "5432"
+  DB_NAME: "xafrabs_ads"
+  DB_USER: "xafrabs_userads"
+  DB_PASSWORD: "QWERty123456789"
+  SPRING_PROFILES_ACTIVE: "prod"

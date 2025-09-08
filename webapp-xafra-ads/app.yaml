@@ -1,0 +1,15 @@
+runtime: java8
+instance_class: F2
+
+env_variables:
+  DB_HOST: "34.28.245.62"
+  DB_PORT: "5432"
+  DB_NAME: "xafra-ads"
+  DB_USER: "postgres"
+  DB_PASSWORD: "XafraTech2025!"
+  SPRING_PROFILES_ACTIVE: "prod"
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+  target_cpu_utilization: 0.6
