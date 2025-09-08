@@ -271,6 +271,90 @@
 					"response": []
 				},
 				{
+					"name": "🆕 Tracking Automático - Product ID 110 (Digital-X)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🤖 Iniciando tracking automático...');",
+									"console.log('🆔 Product ID: 110 (Digital-X Costa Rica)');",
+									"console.log('📊 Endpoint: GET /ads/tr/{encrypted_param}/');",
+									"console.log('🎯 Funcionalidad: XAFRA-ADS genera tracking ID automáticamente');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 302 (Redirect)', function () {",
+									"    pm.expect(pm.response.code).to.eql(302);",
+									"});",
+									"",
+									"pm.test('Response has Location header', function () {",
+									"    pm.expect(pm.response.headers.has('location')).to.be.true;",
+									"});",
+									"",
+									"if (pm.response.code === 302) {",
+									"    let locationHeader = pm.response.headers.get('location');",
+									"    console.log('✅ Redirección exitosa a:', locationHeader);",
+									"    ",
+									"    // Extraer tracking ID de la URL de redirección",
+									"    let trackingMatch = locationHeader.match(/tracking=([^&]+)/);",
+									"    if (trackingMatch) {",
+									"        let autoTracking = trackingMatch[1];",
+									"        console.log('🤖 Tracking auto-generado:', autoTracking);",
+									"        pm.globals.set('auto_generated_tracking', autoTracking);",
+									"        ",
+									"        // Verificar formato XAFRA_YYYYMMDD_HHMMSS_NNNNN",
+									"        if (autoTracking.startsWith('XAFRA_')) {",
+									"            console.log('✅ Formato de tracking correcto');",
+									"        } else {",
+									"            console.log('⚠️ Formato de tracking inesperado');",
+									"        }",
+									"    } else {",
+									"        console.log('⚠️ No se encontró tracking en la URL de redirección');",
+									"    }",
+									"    ",
+									"    // Verificar que redirige a Digital-X",
+									"    if (locationHeader.includes('digital-x.com.co')) {",
+									"        console.log('✅ Redirección correcta a Digital-X');",
+									"    }",
+									"    ",
+									"    // Verificar país Costa Rica",
+									"    if (locationHeader.includes('costarica')) {",
+									"        console.log('✅ País correcto: Costa Rica');",
+									"    }",
+									"} else {",
+									"    console.log('❌ Error: Se esperaba redirección 302, obtenido:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/tr/zhv130RYZdznrnewOUF$lA/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"tr",
+								"zhv130RYZdznrnewOUF$lA",
+								""
+							]
+						},
+						"description": "**🆕 Endpoint de Tracking Automático - XAFRA-ADS genera el tracking ID**\n\n**Funcionalidad Principal:**\n- XAFRA-ADS genera automáticamente un tracking ID único\n- No requiere parámetros de tracking en la URL\n- El sistema controla completamente la generación de IDs\n- Ideal para partners que no manejan tracking propio\n\n**Product ID 110: Digital-X Costa Rica - Kolbi**\n- Partner: Digital-X\n- País: Costa Rica (CR)\n- Operador: Kolbi\n- Parámetro encriptado: `zhv130RYZdznrnewOUF$lA`\n\n**Formato de Tracking Generado:**\n```\nXAFRA_YYYYMMDD_HHMMSS_NNNNN\nEjemplo: XAFRA_20250908_223015_42851\n```\n\n**Flujo de Procesamiento:**\n1. Usuario accede a `/ads/tr/{encrypted_param}/`\n2. Sistema desencripta parámetro → Product ID 110\n3. Sistema genera tracking único: `XAFRA_20250908_223015_42851`\n4. Sistema busca producto Digital-X en BD\n5. Sistema crea campaign con tracking auto-generado\n6. Sistema redirige: `https://lp.digital-x.com.co/costarica/kolbi/campaign1?tracking=XAFRA_20250908_223015_42851`\n\n**Diferencias vs. Endpoint Normal:**\n- `/ads/{param}/?clickId=ID` → Tracking externo (traffic source)\n- `/ads/tr/{param}/` → Tracking automático (XAFRA-ADS)\n\n**Casos de Uso:**\n✅ Partners sin sistema de tracking propio\n✅ Campañas donde XAFRA-ADS controla completamente el flujo\n✅ Necesidad de IDs únicos garantizados\n✅ Formato estandarizado para reporting\n\n**Confirmación Posterior:**\nEl tracking auto-generado puede usarse en:\n- `/ads/confirm/{auto_generated_tracking}`\n- `/ads/v1/confirm/{apikey}/{auto_generated_tracking}`\n\n**Respuesta Esperada:**\n```\nHTTP/1.1 302 Found\nlocation: https://lp.digital-x.com.co/costarica/kolbi/campaign1?tracking=XAFRA_20250908_223015_42851\n```"
+					},
+					"response": []
+				},
+				{
 					"name": "Confirmar Conversión",
 					"request": {
 						"method": "GET",
