@@ -75,29 +75,58 @@
 			"name": "📱 Procesamiento de Ads",
 			"item": [
 				{
-					"name": "Procesar Ad con Parámetros",
+					"name": "Procesar Ad - Product ID 1 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 1');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: M85DjiEk4XszqaUk94vETA');",
+									"pm.globals.set('current_tracking', 'TRACK_' + Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 1');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/ads/ABC123/?clickId=TRACK_001&utm_source=google&utm_campaign=test",
+							"raw": "{{base_url}}/ads/M85DjiEk4XszqaUk94vETA/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"ads",
-								"ABC123",
+								"M85DjiEk4XszqaUk94vETA",
 								""
 							],
 							"query": [
 								{
 									"key": "clickId",
-									"value": "TRACK_001",
+									"value": "{{tracking_id}}",
 									"description": "ID de tracking para la campaña"
 								},
 								{
 									"key": "utm_source",
-									"value": "google",
+									"value": "postman",
 									"description": "Fuente de tráfico"
 								},
 								{
@@ -107,7 +136,137 @@
 								}
 							]
 						},
-						"description": "Procesar ads con parámetros encriptados. Soporta: ClickId, clickId, ClickID, clickID, tracker"
+						"description": "✅ FUNCIONAL - Procesar ad para Product ID 1. Parámetro encriptado válido: M85DjiEk4XszqaUk94vETA. Confirmado funcionando en production."
+					},
+					"response": []
+				},
+				{
+					"name": "Procesar Ad - Product ID 2 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 2');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: hE6wiDK+BUKM2cSJgSshnQ');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 2');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/hE6wiDK+BUKM2cSJgSshnQ/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"hE6wiDK+BUKM2cSJgSshnQ",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "{{tracking_id}}",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "postman",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "✅ FUNCIONAL - Procesar ad para Product ID 2. Parámetro encriptado válido: hE6wiDK+BUKM2cSJgSshnQ"
+					},
+					"response": []
+				},
+				{
+					"name": "Procesar Ad - Product ID 3 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 3');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: T0jgZrjniEHPS7u1ZB9UkA');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 3');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/T0jgZrjniEHPS7u1ZB9UkA/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"T0jgZrjniEHPS7u1ZB9UkA",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "{{tracking_id}}",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "postman",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "✅ FUNCIONAL - Procesar ad para Product ID 3. Parámetro encriptado válido: T0jgZrjniEHPS7u1ZB9UkA"
 					},
 					"response": []
 				},
@@ -164,6 +323,200 @@
 				}
 			],
 			"description": "Endpoints para el procesamiento de anuncios y tracking de conversiones"
+		},
+		{
+			"name": "🇨🇷 Tracking Corto Costa Rica",
+			"item": [
+				{
+					"name": "Configurar Tracking Corto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🇨🇷 Configurando tracking corto para Costa Rica - Kolbi...');",
+									"console.log('📊 Endpoint: POST /api/config/xafra');",
+									"console.log('🎯 Funcionalidad: Asignar tracking corto a campaign existente');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test('Response has success field', function () {",
+									"    pm.expect(pm.response.json()).to.have.property('success');",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    let responseJson = pm.response.json();",
+									"    if (responseJson.success) {",
+									"        console.log('✅ Tracking corto configurado exitosamente');",
+									"        console.log('📍 Original tracking:', responseJson.original_tracking);",
+									"        console.log('🔗 Short tracking:', responseJson.short_tracking);",
+									"        console.log('🌍 País:', responseJson.country);",
+									"        console.log('📡 Operador:', responseJson.operator);",
+									"        pm.globals.set('last_short_tracking', responseJson.short_tracking);",
+									"    } else {",
+									"        console.log('❌ Error:', responseJson.error);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Tipo de contenido JSON"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"apikey\": \"customer-api-key-example\",\n  \"original_tracking\": \"TRK123456789\",\n  \"short_tracking\": \"CR001\",\n  \"enabled\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/config/xafra",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"config",
+								"xafra"
+							]
+						},
+						"description": "**🇨🇷 Endpoint para configurar tracking corto de Costa Rica - Kolbi**\n\n**Funcionalidad:**\n- Permite al customer asignar un tracking corto a un campaign existente\n- Solo funciona para productos de Costa Rica con operador Kolbi\n- Valida que el tracking original exista y sea válido\n- Previene duplicados de tracking corto\n\n**Validaciones:**\n✅ APIKey requerido\n✅ Tracking original debe existir\n✅ Solo para Costa Rica (CR) - Kolbi\n✅ Tracking corto único\n✅ Campaign en estado válido\n\n**Respuesta exitosa:**\n```json\n{\n  \"success\": true,\n  \"message\": \"Tracking corto configurado exitosamente\",\n  \"original_tracking\": \"TRK123456789\",\n  \"short_tracking\": \"CR001\",\n  \"country\": \"CR\",\n  \"operator\": \"Kolbi\"\n}\n```\n\n**Casos de uso:**\n1. Customer genera tracking corto para SMS\n2. Usuario envía SMS con tracking corto a Kolbi\n3. Sistema puede procesar confirmaciones usando el tracking corto"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar Venta por Tracking Corto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🇨🇷 Procesando confirmación por tracking corto...');",
+									"console.log('📊 Endpoint: POST /service/v1/confirm/short/{apikey}/{shortTracking}');",
+									"console.log('🎯 Funcionalidad: Confirmar venta usando tracking corto de Costa Rica');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test('Response has success field', function () {",
+									"    pm.expect(pm.response.json()).to.have.property('success');",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    let responseJson = pm.response.json();",
+									"    if (responseJson.success) {",
+									"        console.log('✅ Venta confirmada exitosamente');",
+									"        console.log('🔗 Short tracking:', responseJson.short_tracking);",
+									"        console.log('📍 Original tracking:', responseJson.original_tracking);",
+									"        console.log('🆔 Campaign ID:', responseJson.campaign_id);",
+									"        console.log('🌍 País:', responseJson.country);",
+									"        console.log('📡 Operador:', responseJson.operator);",
+									"        console.log('⏰ Timestamp:', responseJson.timestamp);",
+									"    } else {",
+									"        console.log('❌ Error:', responseJson.error);",
+									"    }",
+									"} else {",
+									"    console.log('❌ HTTP Error:', pm.response.code, pm.response.status);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/service/v1/confirm/short/customer-api-key-example/CR001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service",
+								"v1",
+								"confirm",
+								"short",
+								"customer-api-key-example",
+								"CR001"
+							]
+						},
+						"description": "**🇨🇷 Endpoint para confirmar ventas usando tracking corto de Costa Rica - Kolbi**\n\n**Funcionalidad:**\n- Busca el campaign por tracking corto asignado\n- Valida que sea para Costa Rica - Kolbi\n- Procesa la confirmación usando la lógica existente del sistema\n- Actualiza el estado del campaign a CONFIRMED\n- Notifica al traffic source sobre la conversión\n\n**Parámetros de URL:**\n- `{apikey}`: API key del customer para autenticación\n- `{shortTracking}`: Código corto asignado al campaign (ej: \"CR001\", \"AB123\")\n\n**Validaciones:**\n✅ APIKey requerido en URL\n✅ Short tracking requerido en URL\n✅ Tracking corto debe existir en BD\n✅ Solo para Costa Rica (CR) - Kolbi\n✅ Campaign en estado válido para confirmación\n\n**Respuesta exitosa:**\n```json\n{\n  \"success\": true,\n  \"message\": \"Venta confirmada exitosamente\",\n  \"short_tracking\": \"CR001\",\n  \"original_tracking\": \"TRK123456789\",\n  \"campaign_id\": 12345,\n  \"country\": \"CR\",\n  \"operator\": \"Kolbi\",\n  \"timestamp\": \"2025-09-08T10:30:00Z\"\n}\n```\n\n**Flujo típico:**\n1. Usuario accede a URL de tracking → Campaign creado\n2. Customer llama `/api/config/xafra` → Tracking corto asignado\n3. Usuario envía SMS con tracking corto → Kolbi procesa\n4. Kolbi confirma a customer → Customer llama este endpoint\n5. Sistema procesa confirmación → Traffic source notificado"
+					},
+					"response": []
+				},
+				{
+					"name": "Información Costa Rica - Kolbi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    let responseJson = pm.response.json();",
+									"    console.log('🇨🇷 Información de Costa Rica - Kolbi:');",
+									"    console.log('📍 Código país:', responseJson.country_code);",
+									"    console.log('🌍 Nombre país:', responseJson.country_name);",
+									"    console.log('📡 Operador:', responseJson.operator);",
+									"    console.log('🔗 Tracking corto habilitado:', responseJson.short_tracking_enabled);",
+									"    console.log('📋 Descripción:', responseJson.description);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/config/costa-rica-kolbi",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"config",
+								"costa-rica-kolbi"
+							]
+						},
+						"description": "**🇨🇷 Endpoint informativo sobre la configuración de Costa Rica - Kolbi**\n\n**Funcionalidad:**\n- Proporciona información sobre la configuración específica para Costa Rica\n- Muestra ejemplos de customer y product para Kolbi\n- Confirma que el tracking corto está habilitado\n- Útil para validar la configuración antes de implementar\n\n**Respuesta:**\n```json\n{\n  \"country_code\": \"CR\",\n  \"country_name\": \"Costa Rica\",\n  \"operator\": \"Kolbi\",\n  \"short_tracking_enabled\": true,\n  \"description\": \"Configuración para tracking corto en Costa Rica - Kolbi\",\n  \"example_customer\": {\n    \"name\": \"Customer Costa Rica\",\n    \"country\": \"CR\",\n    \"operator\": \"Kolbi\"\n  },\n  \"example_product\": {\n    \"name\": \"SMS Premium CR\",\n    \"country\": \"CR\",\n    \"operator\": \"Kolbi\"\n  }\n}\n```\n\n**Uso:**\n- Verificar que el sistema está configurado para Costa Rica\n- Obtener ejemplos de configuración correcta\n- Validar que el tracking corto está habilitado"
+					},
+					"response": []
+				}
+			],
+			"description": "**🇨🇷 Sistema de Tracking Corto para Costa Rica - Kolbi**\n\nEsta sección contiene los endpoints específicos para el manejo de tracking corto en Costa Rica con el operador Kolbi. El sistema permite a los customers asignar códigos cortos a sus campaigns para facilitar el proceso de confirmación de ventas a través de SMS.\n\n**Características principales:**\n- ✅ **Específico por país/operador:** Solo funciona para Costa Rica - Kolbi\n- ✅ **Tracking flexible:** Soporte para códigos cortos en SMS\n- ✅ **Validaciones robustas:** APIKey, existencia de tracking, país/operador\n- ✅ **Integración completa:** Usa la lógica existente del sistema\n- ✅ **Prevención de duplicados:** Tracking corto único\n\n**Flujo completo:**\n1. Usuario accede a URL de tracking normal → Campaign creado automáticamente\n2. Customer usa `/api/config/xafra` → Asigna tracking corto al campaign\n3. Usuario envía SMS con tracking corto → Kolbi procesa la suscripción\n4. Kolbi confirma a customer → Customer usa `/service/v1/confirm/short/` → Venta confirmada\n5. Sistema notifica al traffic source → Conversión completada"
 		},
 		{
 			"name": "🤖 Auto-Suscripción Masiva",
@@ -276,6 +629,36 @@
 			"item": [
 				{
 					"name": "Servicio de Encriptación (Forma Correcta)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🔐 Generando parámetro encriptado...');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    let encryptedValue = pm.response.text();",
+									"    console.log('✅ Parámetro encriptado generado:', encryptedValue);",
+									"    console.log('🔗 URL de ejemplo: {{base_url}}/ads/' + encryptedValue + '/?clickId=TRACK_001');",
+									"    pm.globals.set('last_encrypted_param', encryptedValue);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -292,7 +675,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "14",
+							"raw": "1",
 							"options": {
 								"raw": {
 									"language": "text"
@@ -309,7 +692,68 @@
 								"encryption"
 							]
 						},
-						"description": "Encriptación AES para customer_id. Envía el customer_id como texto plano en el body y devuelve el valor encriptado.\n\n**Parámetros:**\n- Body: customer_id (ej: \"14\")\n- Header 'user': xafra2-ads-encrytion3\n- Content-Type: text/plain\n\n**Respuesta:** Texto encriptado que puede usarse en URLs de campañas"
+						"description": "✅ CORREGIDO - Encriptación AES para product_id. Envía el product_id como texto plano en el body y devuelve el valor encriptado.\n\n**Uso Correcto:**\n- Body: product_id (ej: \"1\", \"2\", \"3\")\n- Header 'user': xafra2-ads-encrytion3\n- Content-Type: text/plain\n\n**Respuesta:** Texto encriptado para usar en URLs de tracking:\n- Product ID 1 → M85DjiEk4XszqaUk94vETA\n- Product ID 2 → hE6wiDK+BUKM2cSJgSshnQ\n- Product ID 3 → T0jgZrjniEHPS7u1ZB9UkA\n\n**URL de ejemplo:** {{base_url}}/ads/{ENCRYPTED_VALUE}/?clickId=TRACK_001"
+					},
+					"response": []
+				},
+				{
+					"name": "Generar Parámetro para Product ID 5",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🔐 Generando parámetro para Product ID 5...');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    let encryptedValue = pm.response.text();",
+									"    console.log('✅ Product ID 5 → Parámetro encriptado:', encryptedValue);",
+									"    console.log('🔗 URL funcional: {{base_url}}/ads/' + encryptedValue + '/?clickId=TRACK_' + Date.now());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							},
+							{
+								"key": "user",
+								"value": "xafra2-ads-encrytion3"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "5",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/util/encryption",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"util",
+								"encryption"
+							]
+						},
+						"description": "Ejemplo de generación de parámetro encriptado para Product ID 5. Cambia el body por cualquier Product ID que necesites."
 					},
 					"response": []
 				},
