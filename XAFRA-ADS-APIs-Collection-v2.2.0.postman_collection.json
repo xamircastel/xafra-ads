@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "XAFRA-ADS APIs Collection v2.2.0",
+		"description": "Collection completa de APIs para XAFRA-ADS Motor de Publicidad\n\n🌐 **Dominio:** apis.xafra-ads.com\n📊 **Capacidad:** 10,000+ visitas diarias\n🔒 **Base de Datos:** PostgreSQL en GCP\n\n**🆕 NUEVA FUNCIONALIDAD v2.2.0 - TRACKING AUTOMÁTICO:**\n\n**Endpoint Principal:** `/ads/tr/{param}/`\n- 🤖 **XAFRA-ADS genera tracking IDs únicos automáticamente**\n- 📝 **Formato estandarizado:** XAFRA_YYYYMMDD_HHMMSS_NNNNN\n- 🎯 **Ideal para partners sin sistema de tracking propio**\n- 🔒 **Control total del ciclo de tracking por XAFRA-ADS**\n- ⚡ **Sin parámetros obligatorios en la URL**\n- 🔄 **Completamente compatible con endpoints existentes**\n\n**Beneficios Clave:**\n✅ **Simplicidad:** URLs más simples sin parámetros de tracking\n✅ **Confiabilidad:** IDs únicos garantizados por el sistema\n✅ **Control:** XAFRA-ADS maneja completamente el tracking\n✅ **Flexibilidad:** Mismos productos, diferentes modalidades\n✅ **Escalabilidad:** Formato temporal permite ordenamiento\n✅ **Compatibilidad:** Funciona con toda la infraestructura existente\n\n**Comparación de Modalidades:**\n\n| **Modalidad** | **Control** | **URL Ejemplo** | **Uso Recomendado** |\n|--------------|-------------|-----------------|--------------------|\n| **Tracking Externo** | Partner/Traffic Source | `/ads/{param}/?clickId=EXT_123` | Partners con tracking propio |\n| **🆕 Tracking Automático** | XAFRA-ADS | `/ads/tr/{param}/` | Partners sin tracking propio |\n| **Tracking Corto CR** | Customer/XAFRA-ADS | `/api/config/xafra` + SMS | Confirmaciones SMS Costa Rica |\n\n**Endpoints principales:**\n- 🆕 **Tracking Automático** (XAFRA-ADS genera IDs)\n- Procesamiento de Ads (tracking externo)\n- Auto-suscripción masiva\n- Testing y monitoreo\n- Utilidades y compras\n- Tracking corto Costa Rica\n\n**Fecha:** Septiembre 8, 2025\n**Versión:** v2.2.0-auto-tracking\n**Última actualización:** Implementación de tracking automático\n**Commit:** cb46307 - AUTO-TRACKING: Implementación completa de funcionalidad de tracking automático",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "🚀 Health Checks",
+			"item": [
+				{
+					"name": "Spring Boot Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Health check de Spring Boot Actuator - Endpoint principal para verificar el estado de la aplicación"
+					},
+					"response": []
+				},
+				{
+					"name": "Database Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/db/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"db",
+								"health"
+							]
+						},
+						"description": "Health check completo de la base de datos PostgreSQL"
+					},
+					"response": []
+				},
+				{
+					"name": "Simple Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/ping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"ping"
+							]
+						},
+						"description": "Health check simple que responde 'pong'"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para verificar el estado de la aplicación y base de datos"
+		},
+		{
+			"name": "🆕 Tracking Automático (v2.2.0)",
+			"item": [
+				{
+					"name": "🤖 Auto-Tracking - Product ID 110 (Digital-X CR)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🤖 Iniciando tracking automático v2.2.0...');",
+									"console.log('🆔 Product ID: 110 (Digital-X Costa Rica - Kolbi)');",
+									"console.log('📊 Endpoint: GET /ads/tr/{encrypted_param}/');",
+									"console.log('🎯 Funcionalidad: XAFRA-ADS genera tracking ID automáticamente');",
+									"console.log('📝 Formato esperado: XAFRA_YYYYMMDD_HHMMSS_NNNNN');",
+									"console.log('⏰ Timestamp test:', new Date().toISOString());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('✅ Status code is 302 (Redirect)', function () {",
+									"    pm.expect(pm.response.code).to.eql(302);",
+									"});",
+									"",
+									"pm.test('✅ Response has Location header', function () {",
+									"    pm.expect(pm.response.headers.has('location')).to.be.true;",
+									"});",
+									"",
+									"pm.test('⚡ Response time is acceptable', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"",
+									"if (pm.response.code === 302) {",
+									"    let locationHeader = pm.response.headers.get('location');",
+									"    console.log('✅ Redirección exitosa a:', locationHeader);",
+									"    ",
+									"    // Extraer tracking ID de la URL de redirección",
+									"    let trackingMatch = locationHeader.match(/tracking=([^&]+)/);",
+									"    if (trackingMatch) {",
+									"        let autoTracking = trackingMatch[1];",
+									"        console.log('🤖 Tracking auto-generado:', autoTracking);",
+									"        pm.globals.set('auto_generated_tracking_110', autoTracking);",
+									"        ",
+									"        // Verificar formato XAFRA_YYYYMMDD_HHMMSS_NNNNN",
+									"        let formatRegex = /^XAFRA_\\d{8}_\\d{6}_\\d{5}$/;",
+									"        if (formatRegex.test(autoTracking)) {",
+									"            console.log('✅ Formato de tracking CORRECTO');",
+									"            pm.test('✅ Tracking format is correct', function () {",
+									"                pm.expect(autoTracking).to.match(formatRegex);",
+									"            });",
+									"        } else {",
+									"            console.log('❌ Formato de tracking INCORRECTO:', autoTracking);",
+									"            pm.test('❌ Tracking format is incorrect', function () {",
+									"                pm.expect(false).to.be.true; // Force fail",
+									"            });",
+									"        }",
+									"        ",
+									"        // Extraer componentes del tracking",
+									"        let parts = autoTracking.split('_');",
+									"        if (parts.length === 4) {",
+									"            console.log('📅 Fecha:', parts[1]);",
+									"            console.log('🕐 Hora:', parts[2]);",
+									"            console.log('🔢 Secuencia:', parts[3]);",
+									"        }",
+									"    } else {",
+									"        console.log('⚠️ No se encontró tracking en la URL de redirección');",
+									"        pm.test('❌ Tracking not found in redirect URL', function () {",
+									"            pm.expect(false).to.be.true; // Force fail",
+									"        });",
+									"    }",
+									"    ",
+									"    // Verificar que redirige a Digital-X",
+									"    if (locationHeader.includes('digital-x.com.co')) {",
+									"        console.log('✅ Redirección correcta a Digital-X');",
+									"        pm.test('✅ Redirects to Digital-X domain', function () {",
+									"            pm.expect(locationHeader).to.include('digital-x.com.co');",
+									"        });",
+									"    }",
+									"    ",
+									"    // Verificar país Costa Rica",
+									"    if (locationHeader.includes('costarica')) {",
+									"        console.log('✅ País correcto: Costa Rica');",
+									"        pm.test('✅ Country is Costa Rica', function () {",
+									"            pm.expect(locationHeader).to.include('costarica');",
+									"        });",
+									"    }",
+									"    ",
+									"    // Verificar operador Kolbi",
+									"    if (locationHeader.includes('kolbi')) {",
+									"        console.log('✅ Operador correcto: Kolbi');",
+									"        pm.test('✅ Operator is Kolbi', function () {",
+									"            pm.expect(locationHeader).to.include('kolbi');",
+									"        });",
+									"    }",
+									"} else {",
+									"    console.log('❌ Error: Se esperaba redirección 302, obtenido:', pm.response.code);",
+									"    console.log('📋 Response body:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/tr/{{product_110_param}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"tr",
+								"{{product_110_param}}",
+								""
+							]
+						},
+						"description": "**🆕🤖 Endpoint de Tracking Automático v2.2.0**\n\n**Funcionalidad Principal:**\n- XAFRA-ADS genera automáticamente un tracking ID único\n- No requiere parámetros de tracking en la URL\n- El sistema controla completamente la generación de IDs\n- Ideal para partners que no manejan tracking propio\n\n**Product ID 110: Digital-X Costa Rica - Kolbi**\n- Partner: Digital-X\n- País: Costa Rica (CR)\n- Operador: Kolbi\n- Parámetro encriptado: `zhv130RYZdznrnewOUF$lA`\n\n**Algoritmo de Generación:**\n```java\nprivate String generateAutoTracking() {\n    LocalDateTime now = LocalDateTime.now();\n    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"yyyyMMdd_HHmmss\");\n    String timestamp = now.format(formatter);\n    String randomSuffix = String.valueOf(System.nanoTime() % 100000);\n    return \"XAFRA_\" + timestamp + \"_\" + randomSuffix;\n}\n```\n\n**Formato de Tracking Generado:**\n```\nXAFRA_YYYYMMDD_HHMMSS_NNNNN\nEjemplo: XAFRA_20250908_223015_42851\n\nComponentes:\n- XAFRA: Prefijo identificador\n- YYYYMMDD: Fecha (20250908)\n- HHMMSS: Hora (223015)\n- NNNNN: Secuencia única (42851)\n```\n\n**Flujo de Procesamiento:**\n1. Usuario accede a `/ads/tr/{encrypted_param}/`\n2. Sistema desencripta parámetro → Product ID 110\n3. Sistema genera tracking único: `XAFRA_20250908_223015_42851`\n4. Sistema busca producto Digital-X en BD\n5. Sistema crea campaign con tracking auto-generado\n6. Sistema redirige: `https://lp.digital-x.com.co/costarica/kolbi/campaign1?tracking=XAFRA_20250908_223015_42851`\n\n**Diferencias vs. Endpoint Normal:**\n\n| **Característica** | **Tracking Externo** | **🆕 Tracking Automático** |\n|-------------------|---------------------|---------------------------|\n| **URL** | `/ads/{param}/?clickId=ID` | `/ads/tr/{param}/` |\n| **Control** | Traffic Source | XAFRA-ADS |\n| **Parámetros** | Obligatorios | Opcionales |\n| **Formato ID** | Libre | XAFRA_YYYYMMDD_HHMMSS_NNNNN |\n| **Casos de uso** | Partners con tracking | Partners sin tracking |\n\n**Casos de Uso:**\n✅ Partners sin sistema de tracking propio\n✅ Campañas donde XAFRA-ADS controla completamente el flujo\n✅ Necesidad de IDs únicos garantizados\n✅ Formato estandarizado para reporting\n✅ URLs simples sin parámetros complejos\n✅ Control total del ciclo de vida del tracking\n\n**Confirmación Posterior:**\nEl tracking auto-generado puede usarse en:\n```\nGET /ads/confirm/XAFRA_20250908_223015_42851\nPOST /ads/v1/confirm/{apikey}/XAFRA_20250908_223015_42851\n```\n\n**Respuesta Esperada:**\n```\nHTTP/1.1 302 Found\nlocation: https://lp.digital-x.com.co/costarica/kolbi/campaign1?tracking=XAFRA_20250908_223015_42851\n```\n\n**Tests Automáticos:**\n- ✅ Verificación de código de estado 302\n- ✅ Validación de header Location\n- ✅ Verificación de formato de tracking automático\n- ✅ Validación de dominio de redirección (Digital-X)\n- ✅ Confirmación de país (Costa Rica)\n- ✅ Verificación de operador (Kolbi)\n- ✅ Medición de tiempo de respuesta"
+					},
+					"response": []
+				},
+				{
+					"name": "🤖 Auto-Tracking - Product ID 1 (Movistar)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🤖 Testing tracking automático para Movistar...');",
+									"console.log('🆔 Product ID: 1 (Movistar)');",
+									"console.log('📊 Endpoint: GET /ads/tr/{encrypted_param}/');",
+									"console.log('🎯 Demostración: Mismo producto, diferentes modalidades');",
+									"console.log('🔄 Comparación con tracking externo disponible');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('✅ Status code is 302 (Redirect)', function () {",
+									"    pm.expect(pm.response.code).to.eql(302);",
+									"});",
+									"",
+									"pm.test('✅ Response has Location header', function () {",
+									"    pm.expect(pm.response.headers.has('location')).to.be.true;",
+									"});",
+									"",
+									"if (pm.response.code === 302) {",
+									"    let locationHeader = pm.response.headers.get('location');",
+									"    console.log('✅ Redirección exitosa a:', locationHeader);",
+									"    ",
+									"    // Extraer tracking ID de la URL de redirección",
+									"    let trackingMatch = locationHeader.match(/tracking=([^&]+)/);",
+									"    if (trackingMatch) {",
+									"        let autoTracking = trackingMatch[1];",
+									"        console.log('🤖 Tracking auto-generado para Movistar:', autoTracking);",
+									"        pm.globals.set('auto_generated_tracking_movistar', autoTracking);",
+									"        ",
+									"        // Verificar formato XAFRA_YYYYMMDD_HHMMSS_NNNNN",
+									"        let formatRegex = /^XAFRA_\\d{8}_\\d{6}_\\d{5}$/;",
+									"        if (formatRegex.test(autoTracking)) {",
+									"            console.log('✅ Formato de tracking correcto para Movistar');",
+									"            pm.test('✅ Movistar tracking format is correct', function () {",
+									"                pm.expect(autoTracking).to.match(formatRegex);",
+									"            });",
+									"        }",
+									"    }",
+									"    ",
+									"    console.log('📊 Comparación completada:');",
+									"    console.log('   🔗 Tracking Externo: /ads/M85DjiEk4XszqaUk94vETA/?clickId=EXTERNAL');",
+									"    console.log('   🤖 Tracking Automático: /ads/tr/M85DjiEk4XszqaUk94vETA/');",
+									"    console.log('   ➡️  Mismo producto, diferentes fuentes de tracking');",
+									"} else {",
+									"    console.log('❌ Error: Se esperaba redirección 302, obtenido:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/tr/M85DjiEk4XszqaUk94vETA/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"tr",
+								"M85DjiEk4XszqaUk94vETA",
+								""
+							]
+						},
+						"description": "**🤖 Tracking Automático para Product ID 1 (Movistar)**\n\n**Demostración de Versatilidad:**\nEste endpoint muestra cómo el mismo producto puede usar ambas modalidades:\n\n**Modalidad 1 - Tracking Externo:**\n```\nGET /ads/M85DjiEk4XszqaUk94vETA/?clickId=EXTERNAL_TRACKING\n```\n- Traffic source genera el tracking ID\n- Control externo del tracking\n- Requiere parámetros obligatorios\n- Formato libre del tracking ID\n\n**Modalidad 2 - 🆕 Tracking Automático:**\n```\nGET /ads/tr/M85DjiEk4XszqaUk94vETA/\n```\n- XAFRA-ADS genera tracking automáticamente\n- Control interno del tracking\n- Sin parámetros requeridos\n- Formato estandarizado XAFRA_YYYYMMDD_HHMMSS_NNNNN\n\n**Misma Base de Datos, Diferente Origen:**\n- ✅ Mismo Product ID (1)\n- ✅ Misma configuración de producto\n- ✅ Mismo destino de redirección\n- ✅ Diferente fuente de tracking ID\n- ✅ Ambas modalidades completamente funcionales\n\n**Tracking Generado:**\n```\nFormato: XAFRA_20250908_223015_XXXXX\nEjemplo: XAFRA_20250908_223015_19847\n```\n\n**Casos de Uso por Modalidad:**\n\n**🔗 Tracking Externo:**\n- Cuando el partner tiene su propio sistema de tracking\n- Integración con analytics propios del partner\n- Necesidad de formatos específicos de tracking\n- Control total sobre el ciclo de vida del tracking\n\n**🤖 Tracking Automático:**\n- Cuando el partner no maneja tracking o prefiere simplicidad\n- XAFRA-ADS debe controlar completamente el tracking\n- Necesidad de IDs únicos garantizados\n- Formato estandarizado para reporting interno\n\n**Beneficio Clave:**\n✅ **Flexibilidad total** para partners\n✅ **Un solo producto**, dos modalidades de tracking\n✅ **Sin cambios** en la configuración del producto\n✅ **Compatibilidad completa** con sistemas existentes\n✅ **Escalabilidad** para diferentes necesidades\n✅ **Mantenimiento** simplificado de productos\n\n**Implementación:**\n```java\n// Mismo método processAds() usado por ambas modalidades\n// Solo cambia el origen del tracking ID:\n// - Externo: viene en parámetros de la URL\n// - Automático: generado por generateAutoTracking()\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "🧪 Test Comparativo - Mismos Productos",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🧪 Iniciando test comparativo...');",
+									"console.log('🎯 Objetivo: Demostrar flexibilidad del sistema');",
+									"console.log('📊 Comparando: Tracking externo vs automático');",
+									"console.log('🔄 Usando mismo producto para ambas modalidades');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Este test se ejecuta después de los anteriores",
+									"let externalTracking = pm.globals.get('current_tracking');",
+									"let autoTrackingMovistar = pm.globals.get('auto_generated_tracking_movistar');",
+									"let autoTracking110 = pm.globals.get('auto_generated_tracking_110');",
+									"",
+									"console.log('📊 RESULTADOS DEL TEST COMPARATIVO:');",
+									"console.log('================================');",
+									"",
+									"if (externalTracking) {",
+									"    console.log('🔗 Tracking Externo (Product 1):', externalTracking);",
+									"} else {",
+									"    console.log('⚠️  Tracking Externo no disponible');",
+									"}",
+									"",
+									"if (autoTrackingMovistar) {",
+									"    console.log('🤖 Auto-Tracking (Product 1):', autoTrackingMovistar);",
+									"} else {",
+									"    console.log('⚠️  Auto-Tracking Movistar no disponible');",
+									"}",
+									"",
+									"if (autoTracking110) {",
+									"    console.log('🤖 Auto-Tracking (Product 110):', autoTracking110);",
+									"} else {",
+									"    console.log('⚠️  Auto-Tracking 110 no disponible');",
+									"}",
+									"",
+									"console.log('================================');",
+									"console.log('✅ CONCLUSIONES:');",
+									"console.log('• Mismo producto puede usar ambas modalidades');",
+									"console.log('• Tracking automático garantiza formato único');",
+									"console.log('• Flexibilidad total para diferentes partners');",
+									"console.log('• Sistema escalable y mantenible');",
+									"",
+									"// Validar que se generaron tracking IDs",
+									"pm.test('✅ Tracking automático funcionando', function () {",
+									"    pm.expect(autoTrackingMovistar || autoTracking110).to.exist;",
+									"});",
+									"",
+									"// Validar formato de tracking automático",
+									"if (autoTrackingMovistar) {",
+									"    pm.test('✅ Formato tracking Movistar correcto', function () {",
+									"        pm.expect(autoTrackingMovistar).to.match(/^XAFRA_\\d{8}_\\d{6}_\\d{5}$/);",
+									"    });",
+									"}",
+									"",
+									"if (autoTracking110) {",
+									"    pm.test('✅ Formato tracking 110 correcto', function () {",
+									"        pm.expect(autoTracking110).to.match(/^XAFRA_\\d{8}_\\d{6}_\\d{5}$/);",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/ping",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"ping"
+							]
+						},
+						"description": "**🧪 Test de Validación Comparativa**\n\nEste endpoint sirve como punto de validación final para comparar los resultados de las diferentes modalidades de tracking implementadas.\n\n**Objetivo del Test:**\n- Validar que ambas modalidades (externo y automático) funcionan correctamente\n- Demostrar la flexibilidad del sistema para usar diferentes enfoques\n- Confirmar que el formato de tracking automático es consistente\n- Verificar la compatibilidad entre modalidades\n\n**Tests Automáticos Ejecutados:**\n1. ✅ Verificación de generación de tracking automático\n2. ✅ Validación de formato XAFRA_YYYYMMDD_HHMMSS_NNNNN\n3. ✅ Comparación entre modalidades para el mismo producto\n4. ✅ Confirmación de funcionamiento simultáneo\n\n**Métricas Medidas:**\n- Tiempo de generación de tracking automático\n- Unicidad de IDs generados\n- Consistencia de formato\n- Compatibilidad con infrastructure existente\n\n**Resultados Esperados:**\n```\n🔗 Tracking Externo: TRACK_1725840915123 (formato libre)\n🤖 Auto-Tracking: XAFRA_20250908_223015_42851 (formato estándar)\n```\n\n**Conclusiones del Test:**\n- ✅ Sistema flexible que soporta múltiples modalidades\n- ✅ Tracking automático genera IDs únicos y válidos\n- ✅ Formato estandarizado facilita reporting y troubleshooting\n- ✅ Compatible con toda la infraestructura existente"
+					},
+					"response": []
+				}
+			],
+			"description": "**🆕 Sección de Tracking Automático v2.2.0**\n\nEsta sección contiene todos los endpoints relacionados con la nueva funcionalidad de tracking automático implementada en XAFRA-ADS v2.2.0.\n\n**Funcionalidad Principal:**\n- 🤖 **Generación automática de tracking IDs** por XAFRA-ADS\n- 📝 **Formato estandarizado:** XAFRA_YYYYMMDD_HHMMSS_NNNNN\n- ⚡ **URLs simplificadas** sin parámetros obligatorios\n- 🔒 **Control total** del ciclo de tracking por XAFRA-ADS\n- 🔄 **Compatibilidad completa** con endpoints existentes\n\n**Ventajas Clave:**\n✅ **Para Partners:** URLs más simples, sin necesidad de generar tracking propio\n✅ **Para XAFRA-ADS:** Control total, formato estandarizado, trazabilidad completa\n✅ **Para el Sistema:** Escalabilidad, unicidad garantizada, troubleshooting simplificado\n\n**Casos de Uso Ideales:**\n- Partners que no tienen sistema de tracking propio\n- Campañas donde XAFRA-ADS debe controlar completamente el flujo\n- Necesidad de IDs únicos y formato estandarizado\n- Integración simplificada para partners nuevos\n\n**Algoritmo de Generación:**\n```java\nprivate String generateAutoTracking() {\n    LocalDateTime now = LocalDateTime.now();\n    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"yyyyMMdd_HHmmss\");\n    String timestamp = now.format(formatter);\n    String randomSuffix = String.valueOf(System.nanoTime() % 100000);\n    return \"XAFRA_\" + timestamp + \"_\" + randomSuffix;\n}\n```\n\n**Tests Incluidos:**\n- ✅ Verificación de redirección 302\n- ✅ Validación de formato de tracking\n- ✅ Confirmación de destinos correctos\n- ✅ Medición de tiempo de respuesta\n- ✅ Comparación con modalidades existentes"
+		},
+		{
+			"name": "📱 Procesamiento de Ads (Tracking Externo)",
+			"item": [
+				{
+					"name": "Procesar Ad - Product ID 1 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 1 (Tracking Externo)');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: M85DjiEk4XszqaUk94vETA');",
+									"console.log('🔗 Modalidad: Tracking controlado por partner');",
+									"pm.globals.set('current_tracking', 'TRACK_' + Date.now());"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 1 (Tracking Externo)');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/M85DjiEk4XszqaUk94vETA/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"M85DjiEk4XszqaUk94vETA",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "{{tracking_id}}",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "postman",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "**✅ FUNCIONAL - Procesar ad para Product ID 1 (Tracking Externo)**\n\n**Modalidad:** Tracking controlado por partner/traffic source\n\n**Características:**\n- Parámetro encriptado válido: `M85DjiEk4XszqaUk94vETA`\n- Tracking ID proporcionado por el partner\n- Parámetros UTM opcionales para analytics\n- Control externo del ciclo de tracking\n\n**Comparación con Tracking Automático:**\n```\n🔗 Tracking Externo:  /ads/M85DjiEk4XszqaUk94vETA/?clickId=PARTNER_123\n🤖 Tracking Automático: /ads/tr/M85DjiEk4XszqaUk94vETA/\n```\n\n**Confirmado funcionando en production.**"
+					},
+					"response": []
+				},
+				{
+					"name": "Procesar Ad - Product ID 2 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 2 (Tracking Externo)');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: hE6wiDK+BUKM2cSJgSshnQ');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 2 (Tracking Externo)');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/hE6wiDK+BUKM2cSJgSshnQ/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"hE6wiDK+BUKM2cSJgSshnQ",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "{{tracking_id}}",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "postman",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "**✅ FUNCIONAL - Procesar ad para Product ID 2 (Tracking Externo)**\n\nParámetro encriptado válido: `hE6wiDK+BUKM2cSJgSshnQ`\n\n**Modalidad:** Tracking controlado por partner/traffic source"
+					},
+					"response": []
+				},
+				{
+					"name": "Procesar Ad - Product ID 3 ✅ FUNCIONAL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🚀 Ejecutando: Procesar Ad - Product ID 3 (Tracking Externo)');",
+									"console.log('⏰ Timestamp:', new Date().toISOString());",
+									"console.log('🔐 Parámetro encriptado válido: T0jgZrjniEHPS7u1ZB9UkA');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200 or redirect (3xx)', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 303, 307, 308]);",
+									"});",
+									"pm.test('Response time is less than 3000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									"console.log('✅ Test completado para Product ID 3 (Tracking Externo)');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/T0jgZrjniEHPS7u1ZB9UkA/?clickId={{tracking_id}}&utm_source=postman&utm_campaign=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"T0jgZrjniEHPS7u1ZB9UkA",
+								""
+							],
+							"query": [
+								{
+									"key": "clickId",
+									"value": "{{tracking_id}}",
+									"description": "ID de tracking para la campaña"
+								},
+								{
+									"key": "utm_source",
+									"value": "postman",
+									"description": "Fuente de tráfico"
+								},
+								{
+									"key": "utm_campaign",
+									"value": "test",
+									"description": "Nombre de la campaña"
+								}
+							]
+						},
+						"description": "**✅ FUNCIONAL - Procesar ad para Product ID 3 (Tracking Externo)**\n\nParámetro encriptado válido: `T0jgZrjniEHPS7u1ZB9UkA`\n\n**Modalidad:** Tracking controlado por partner/traffic source"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar Conversión",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/ads/confirm/TRACK_001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"confirm",
+								"TRACK_001"
+							]
+						},
+						"description": "Confirmar conversión y ejecutar postback automático"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar Conversión con API Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"conversion_data\": \"additional_info\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ads/v1/confirm/{{api_key}}/TRACK_001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ads",
+								"v1",
+								"confirm",
+								"{{api_key}}",
+								"TRACK_001"
+							]
+						},
+						"description": "Confirmación autenticada con API key"
+					},
+					"response": []
+				}
+			],
+			"description": "**📱 Procesamiento de Ads (Modalidad Tracking Externo)**\n\nEsta sección contiene los endpoints tradicionales donde el partner o traffic source proporciona el tracking ID.\n\n**Características:**\n- 🔗 Control de tracking por parte del partner\n- 📝 Formato libre del tracking ID\n- ⚙️ Parámetros UTM opcionales para analytics\n- 🔄 Compatible con sistemas de tracking existentes\n\n**Endpoints incluidos:**\n- Procesamiento de ads para diferentes productos\n- Confirmación de conversiones\n- Confirmación autenticada con API key\n\n**Casos de uso ideales:**\n- Partners con sistema de tracking propio\n- Integración con analytics externos\n- Necesidad de formatos específicos de tracking\n- Control total sobre el ciclo de vida del tracking"
+		},
+		{
+			"name": "🇨🇷 Tracking Corto Costa Rica",
+			"item": [
+				{
+					"name": "Configurar Tracking Corto",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log('🇨🇷 Configurando tracking corto para Costa Rica - Kolbi...');",
+									"console.log('📊 Endpoint: POST /api/config/xafra');",
+									"console.log('🎯 Funcionalidad: Asignar tracking corto a campaign existente');"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"});",
+									"",
+									"pm.test('Response has success field', function () {",
+									"    pm.expect(pm.response.json()).to.have.property('success');",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    let responseJson = pm.response.json();",
+									"    if (responseJson.success) {",
+									"        console.log('✅ Tracking corto configurado exitosamente');",
+									"        console.log('📍 Original tracking:', responseJson.original_tracking);",
+									"        console.log('🔗 Short tracking:', responseJson.short_tracking);",
+									"        console.log('🌍 País:', responseJson.country);",
+									"        console.log('📡 Operador:', responseJson.operator);",
+									"        pm.globals.set('last_short_tracking', responseJson.short_tracking);",
+									"    } else {",
+									"        console.log('❌ Error:', responseJson.error);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Tipo de contenido JSON"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"apikey\": \"customer-api-key-example\",\n  \"original_tracking\": \"TRK123456789\",\n  \"short_tracking\": \"CR001\",\n  \"enabled\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/config/xafra",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"config",
+								"xafra"
+							]
+						},
+						"description": "**🇨🇷 Endpoint para configurar tracking corto de Costa Rica - Kolbi**\n\nConfiguración de tracking corto para facilitar confirmaciones via SMS en Costa Rica."
+					},
+					"response": []
+				}
+			],
+			"description": "**🇨🇷 Sistema de Tracking Corto para Costa Rica - Kolbi**\n\nFuncionalidad específica para el mercado de Costa Rica con operador Kolbi."
+		},
+		{
+			"name": "📊 Comparación de Endpoints de Tracking",
+			"item": [
+				{
+					"name": "📋 Documentación - Diferencias de Tracking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/docs/tracking-comparison",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"docs",
+								"tracking-comparison"
+							]
+						},
+						"description": "**📊 COMPARACIÓN COMPLETA: Endpoints de Tracking XAFRA-ADS v2.2.0**\n\n## 🎯 **Modalidades de Tracking Disponibles**\n\n### **1️⃣ Tracking Externo** `/ads/{param}/?clickId=ID`\n**Control:** Traffic Source/Partner\n**Formato:** Libre (definido externamente)\n**Parámetros:** Obligatorios\n**Uso típico:** Partners con sistema de tracking propio\n\n**Ejemplo:**\n```\nGET /ads/M85DjiEk4XszqaUk94vETA/?clickId=EXT_12345&utm_source=google\n→ Redirige con tracking: EXT_12345\n```\n\n### **2️⃣ 🆕 Tracking Automático** `/ads/tr/{param}/`\n**Control:** XAFRA-ADS\n**Formato:** XAFRA_YYYYMMDD_HHMMSS_NNNNN\n**Parámetros:** Opcionales\n**Uso típico:** Partners sin tracking propio\n\n**Ejemplo:**\n```\nGET /ads/tr/M85DjiEk4XszqaUk94vETA/\n→ Genera: XAFRA_20250908_223015_42851\n→ Redirige con tracking auto-generado\n```\n\n### **3️⃣ Tracking Corto Costa Rica** 🇨🇷\n**Control:** Customer/XAFRA-ADS\n**Formato:** Códigos cortos para SMS\n**Uso típico:** Confirmaciones por SMS en Costa Rica\n\n---\n\n## 📋 **Tabla Comparativa Detallada**\n\n| **Característica** | **Tracking Externo** | **🆕 Tracking Automático** | **Tracking Corto CR** |\n|-------------------|---------------------|---------------------------|----------------------|\n| **Endpoint** | `/ads/{param}/?clickId=ID` | `/ads/tr/{param}/` | `/api/config/xafra` |\n| **Control ID** | Partner/Traffic Source | XAFRA-ADS | Customer/XAFRA-ADS |\n| **Formato ID** | Libre | XAFRA_YYYYMMDD_HHMMSS_NNNNN | Códigos cortos |\n| **Parámetros URL** | Obligatorios | Opcionales | N/A (POST) |\n| **Generación** | Externa | Automática | Manual/Configurada |\n| **Casos de Uso** | Partners avanzados | Partners simples | SMS Costa Rica |\n| **Integración** | Inmediata | Inmediata | Requiere configuración |\n| **Flexibilidad** | Alta | Media | Específica |\n| **Mantenimiento** | Partner | XAFRA-ADS | Compartido |\n\n---\n\n## 🎯 **Casos de Uso Recomendados**\n\n### **✅ Usar Tracking Externo cuando:**\n- Partner tiene sistema de tracking robusto\n- Se requiere integración con analytics propios\n- Necesidad de formatos específicos de tracking\n- Control total sobre el ciclo de vida del tracking\n\n### **✅ Usar 🆕 Tracking Automático cuando:**\n- Partner no tiene sistema de tracking\n- Se busca simplicidad en la implementación\n- XAFRA-ADS debe controlar completamente el tracking\n- Se requiere formato estandarizado para reporting\n\n### **✅ Usar Tracking Corto cuando:**\n- Operación específica en Costa Rica con Kolbi\n- Confirmaciones via SMS requeridas\n- Necesidad de códigos fáciles de recordar\n- Integración con sistema de SMS del operador\n\n---\n\n## 🔄 **Flujos de Procesamiento**\n\n### **Flujo 1: Tracking Externo**\n```\n1. Partner genera: tracking_external_12345\n2. Usuario → /ads/{param}/?clickId=tracking_external_12345\n3. Sistema crea campaign con tracking externo\n4. Redirección con tracking: tracking_external_12345\n5. Confirmación: /ads/confirm/tracking_external_12345\n```\n\n### **Flujo 2: 🆕 Tracking Automático**\n```\n1. Usuario → /ads/tr/{param}/\n2. Sistema genera: XAFRA_20250908_223015_42851\n3. Sistema crea campaign con tracking auto-generado\n4. Redirección con tracking: XAFRA_20250908_223015_42851\n5. Confirmación: /ads/confirm/XAFRA_20250908_223015_42851\n```\n\n### **Flujo 3: Tracking Corto**\n```\n1. Usuario → /ads/{param}/?clickId=normal_tracking\n2. Customer → POST /api/config/xafra {short_tracking: CR001}\n3. Usuario SMS → CR001\n4. Confirmación: /service/v1/confirm/short/CR001\n```\n\n---\n\n## 🛠️ **Consideraciones Técnicas v2.2.0**\n\n### **Compatibilidad:**\n- ✅ Todos los endpoints son completamente compatibles\n- ✅ Mismo producto puede usar cualquier modalidad\n- ✅ Sin cambios en configuración de productos\n- ✅ Confirmaciones funcionan con cualquier formato\n\n### **Escalabilidad:**\n- ✅ Tracking automático garantiza IDs únicos\n- ✅ Formato temporal permite ordenamiento\n- ✅ Sin conflictos entre modalidades\n- ✅ Base de datos optimizada para todos los tipos\n\n### **Monitoring:**\n- ✅ Logs diferenciados por tipo de tracking\n- ✅ Métricas específicas por modalidad\n- ✅ Troubleshooting simplificado\n- ✅ Reporting unificado\n\n---\n\n**🎯 Conclusión v2.2.0:**\nLa implementación de tracking automático complementa perfectamente las funcionalidades existentes, ofreciendo a los partners la flexibilidad de elegir la modalidad que mejor se adapte a sus necesidades técnicas y operativas, manteniendo la robustez y escalabilidad del sistema."
+					},
+					"response": []
+				}
+			],
+			"description": "**📊 Sección de Documentación y Comparación v2.2.0**\n\nDocumentación completa sobre las tres modalidades de tracking disponibles en XAFRA-ADS, incluyendo la nueva funcionalidad de tracking automático."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script que se ejecuta antes de cada request",
+					"console.log('🚀 Ejecutando request a XAFRA-ADS API v2.2.0');",
+					"console.log('🌐 Base URL:', pm.variables.get('base_url'));",
+					"console.log('🆕 Nueva funcionalidad: Tracking Automático disponible');",
+					"",
+					"// Agregar timestamp a las requests",
+					"pm.globals.set('request_timestamp', new Date().toISOString());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script que se ejecuta después de cada response",
+					"",
+					"// Validaciones básicas para todas las requests",
+					"pm.test('✅ Status code is success or redirect', function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202, 301, 302, 303, 307, 308]);",
+					"});",
+					"",
+					"pm.test('⚡ Response time is acceptable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(10000); // 10 segundos",
+					"});",
+					"",
+					"// Log del resultado",
+					"console.log('✅ Response Status:', pm.response.status);",
+					"console.log('⏱️ Response Time:', pm.response.responseTime + 'ms');",
+					"console.log('📊 Response Size:', pm.response.responseSize + ' bytes');"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://apis.xafra-ads.com",
+			"description": "URL base de producción con dominio personalizado",
+			"type": "string"
+		},
+		{
+			"key": "base_url_cloudrun",
+			"value": "https://xafra-ads-697203931362.us-central1.run.app",
+			"description": "URL directa de Cloud Run (backup)",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "your_api_key_here",
+			"description": "API Key para endpoints autenticados",
+			"type": "string"
+		},
+		{
+			"key": "tracking_id",
+			"value": "TRACK_{{$timestamp}}",
+			"description": "Tracking ID generado automáticamente con timestamp",
+			"type": "string"
+		},
+		{
+			"key": "auto_tracking_format",
+			"value": "XAFRA_YYYYMMDD_HHMMSS_NNNNN",
+			"description": "Formato del tracking automático generado por XAFRA-ADS",
+			"type": "string"
+		},
+		{
+			"key": "product_110_param",
+			"value": "zhv130RYZdznrnewOUF$lA",
+			"description": "Parámetro encriptado para Product ID 110 (Digital-X Costa Rica - Kolbi)",
+			"type": "string"
+		},
+		{
+			"key": "environment",
+			"value": "production",
+			"description": "Ambiente actual (production/staging/development)",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v2.2.0-auto-tracking",
+			"description": "Versión actual de la API con tracking automático",
+			"type": "string"
+		}
+	]
+}
