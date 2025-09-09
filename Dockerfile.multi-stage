@@ -1,0 +1,47 @@
+FROM maven:3.8-openjdk-8 AS build
+
+    # Directorio de trabajo
+    WORKDIR /app
+
+    # Copiar todos los archivos del proyecto multi-módulo
+    COPY . .
+
+    # Compilar commons-help primero
+    WORKDIR /app/commons-help
+    RUN mvn clean install -DskipTests
+
+    # Compilar commons-db (que depende de commons-help)
+    WORKDIR /app/db-access
+    RUN mvn clean install -DskipTests
+
+    # Compilar webapp-xafra-ads (que depende de commons-db)
+    WORKDIR /app/webapp-xafra-ads
+    RUN mvn clean package -DskipTests
+
+    # Etapa final con la aplicación
+    FROM openjdk:8-jre-alpine
+
+    # Instalar dumb-init para manejo de señales
+    RUN apk add --no-cache dumb-init
+
+    # Crear usuario no-root
+    RUN addgroup -g 1000 appuser && adduser -u 1000 -G appuser -s /bin/sh -D appuser
+
+    # Directorio de trabajo
+    WORKDIR /app
+
+    # Copiar el WAR desde la etapa de build
+    COPY --from=build /app/webapp-xafra-ads/target/ads-xafra.war ./ads-xafra.war
+
+    # Cambiar al usuario no-root
+    USER appuser
+
+    # Puerto que expone la aplicación
+    EXPOSE 8080
+
+    # Variables de entorno para JVM optimizada para contenedores
+    ENV JAVA_OPTS="-Xms256m -Xmx512m -Djava.security.egd=file:/dev/./urandom"
+
+    # Comando para ejecutar la aplicación
+    ENTRYPOINT ["dumb-init", "--"]
+    CMD ["sh", "-c", "java $JAVA_OPTS -jar ads-xafra.war"]

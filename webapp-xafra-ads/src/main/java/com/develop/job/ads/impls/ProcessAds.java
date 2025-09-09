@@ -129,7 +129,8 @@ public class ProcessAds extends AbstractProcess<AdsRequest> {
 	}
 
 	private String urlCustomizationRedirect(String url, String traking) {
-		url = url.replaceAll("<TRAKING>", traking);
+		// Usar replace() en lugar de replaceAll() para evitar problemas con caracteres especiales como $
+		url = url.replace("<TRAKING>", traking);
 		return url;
 	}
 
@@ -140,13 +141,30 @@ public class ProcessAds extends AbstractProcess<AdsRequest> {
 		campaign.setStatus(status);
 		campaign.setUuid(uuid);
 		
-		// Asignar país y operador desde el producto
+		// ===== GENERAR XAFRA TRACKING ID INTERNO =====
+		// Este es el tracking interno de XAFRA, diferente al tracking externo
+		String xafraInternalTracking = generateXafraInternalTracking();
+		campaign.setXafraTrackingId(xafraInternalTracking);
+		
+		// ===== CONFIGURAR PAÍS Y OPERADOR DESDE PRODUCT =====
 		if (product != null) {
 			campaign.setCountry(product.getCountry());
 			campaign.setOperator(product.getOperator());
 		}
 		
 		return campaign;
+	}
+	
+	/**
+	 * Genera un tracking ID interno único para XAFRA
+	 * Formato: XFR_YYYYMMDD_HHMMSS_UUID_SHORT
+	 */
+	private String generateXafraInternalTracking() {
+		java.time.LocalDateTime now = java.time.LocalDateTime.now();
+		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+		String timestamp = now.format(formatter);
+		String shortUuid = java.util.UUID.randomUUID().toString().substring(0, 8);
+		return "XFR_" + timestamp + "_" + shortUuid.toUpperCase();
 	}
 
 	@Override

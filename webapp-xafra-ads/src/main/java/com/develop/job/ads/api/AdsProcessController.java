@@ -132,12 +132,13 @@ public class AdsProcessController {
 	 * Genera un tracking ID único automáticamente
 	 */
 	private String generateAutoTracking() {
-		// Formato: XAFRA_YYYYMMDD_HHMMSS_RANDOM
+		// Formato: XAFRA_YYYYMMDD_HHMMSS_UUID
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
 		java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 		String timestamp = now.format(formatter);
-		String randomSuffix = String.valueOf(System.nanoTime() % 100000);
-		return "XAFRA_" + timestamp + "_" + randomSuffix;
+		// Usar UUID parcial para garantizar unicidad absoluta
+		String uniqueSuffix = java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+		return "XAFRA_" + timestamp + "_" + uniqueSuffix;
 	}
 
 }

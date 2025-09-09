@@ -1,0 +1,33 @@
+# Multi-stage build para compilar con Maven y luego crear imagen final
+FROM maven:3.8.4-openjdk-8 AS build
+
+# Copiar archivos del proyecto
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+# Compilar el proyecto
+RUN mvn clean package -DskipTests
+
+# Etapa final con la aplicación
+FROM openjdk:8-jre-alpine
+
+# Crear directorio de trabajo
+WORKDIR /app
+
+# Copiar el WAR compilado desde la etapa de build
+COPY --from=build /app/target/ads-xafra.war app.war
+
+# Crear directorio de logs
+RUN mkdir -p /logs
+
+# Exponer puerto
+EXPOSE 8083
+
+# Variables de entorno optimizadas para Cloud Run
+ENV PORT=8083
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV JAVA_OPTS="-Xmx1g -Xms512m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -Djava.awt.headless=true -Dspring.main.lazy-initialization=true"
+
+# Comando para ejecutar la aplicación
+CMD ["sh", "-c", "exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app/app.war --server.port=$PORT"]
