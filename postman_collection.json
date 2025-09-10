@@ -1,0 +1,902 @@
+{
+  "info": {
+    "name": "Xafra Ads API Collection - CORREGIDA v10.1",
+    "description": "🔥 COLECCIÓN CORREGIDA Y VALIDADA 100% 🔥\n\nCaracterísticas:\n✅ Todas las APIs verificadas contra el código fuente real\n✅ Métodos HTTP correctos (GET/POST)\n✅ Paths exactos según @RequestMapping\n✅ Headers requeridos identificados\n✅ Bodies y parámetros precisos\n✅ Tests automáticos incluidos\n✅ Dominio final apis.xafra-ads.com configurado\n\nCORRECCIONES PRINCIPALES:\n❌ Eliminadas APIs inexistentes (GET /util/encrypt, GET /util/decrypt)\n✅ Única API de encriptación real: POST /util/encryption\n✅ Smart Redirect endpoints verificados y corregidos\n✅ Short Tracking específico para Costa Rica-Kolbi\n✅ Auto Subscribe con todas las combinaciones de parámetros\n✅ AdsProcess con tracking automático vs externo diferenciados",
+    "version": "10.1.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearer_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://apis.xafra-ads.com",
+      "type": "string"
+    },
+    {
+      "key": "local_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "cloud_run_url",
+      "value": "https://xafra-ads-v10-production-1000000000.us-east1.run.app",
+      "type": "string"
+    },
+    {
+      "key": "customer_id",
+      "value": "13",
+      "type": "string"
+    },
+    {
+      "key": "encrypted_customer_id",
+      "value": "iTDq3A6kAVNK96kVJGSuiA",
+      "type": "string"
+    },
+    {
+      "key": "bearer_token",
+      "value": "YOUR_AUTH_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "encryption_user",
+      "value": "YOUR_ENCRYPTION_USER",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "123",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🚀 Smart Redirect APIs",
+      "description": "New intelligent redirect system for cost optimization",
+      "item": [
+        {
+          "name": "Smart Redirect Test",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains success', function () {",
+                  "    pm.expect(pm.response.text()).to.include('success');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/smart/test",
+              "host": ["{{base_url}}"],
+              "path": ["smart", "test"]
+            },
+            "description": "Test Smart Redirect functionality - returns JSON with system status"
+          }
+        },
+        {
+          "name": "Smart Redirect with Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 302', function () {",
+                  "    pm.response.to.have.status(302);",
+                  "});",
+                  "pm.test('Has Location header', function () {",
+                  "    pm.response.to.have.header('Location');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/smart/tr/{{encrypted_customer_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["smart", "tr", "{{encrypted_customer_id}}", ""]
+            },
+            "description": "Smart redirect with auto-tracking generation - returns 302 redirect with tracking"
+          }
+        },
+        {
+          "name": "Smart Redirect with External Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 302', function () {",
+                  "    pm.response.to.have.status(302);",
+                  "});",
+                  "pm.test('Has Location header', function () {",
+                  "    pm.response.to.have.header('Location');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/smart/{{encrypted_customer_id}}/?tracking=external_track_123",
+              "host": ["{{base_url}}"],
+              "path": ["smart", "{{encrypted_customer_id}}", ""],
+              "query": [
+                {
+                  "key": "tracking",
+                  "value": "external_track_123"
+                }
+              ]
+            },
+            "description": "Smart redirect with external tracking parameter - uses provided tracking ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📱 Main Ads Processing - CORREGIDO",
+      "description": "Core ads processing and tracking functionality",
+      "item": [
+        {
+          "name": "Process Ads (Original)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 302 or 200', function () {",
+                  "    pm.expect([200, 302]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ads/{{encrypted_customer_id}}/?ClickId=EXTERNAL_TRACKING_123",
+              "host": ["{{base_url}}"],
+              "path": ["ads", "{{encrypted_customer_id}}", ""],
+              "query": [
+                {
+                  "key": "ClickId",
+                  "value": "EXTERNAL_TRACKING_123",
+                  "description": "Tracking externo - soporta: ClickId, clickId, ClickID, clickID, tracker"
+                }
+              ]
+            },
+            "description": "Procesa ads con tracking externo. Busca tracking en parámetros: ClickId, clickId, ClickID, clickID, tracker."
+          }
+        },
+        {
+          "name": "Process Ads with Auto-Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 302 or 200', function () {",
+                  "    pm.expect([200, 302]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ads/tr/{{encrypted_customer_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["ads", "tr", "{{encrypted_customer_id}}", ""]
+            },
+            "description": "Procesa ads con tracking automático generado por XAFRA-ADS. Formato: XAFRA_YYYYMMDD_HHMMSS_UUID8"
+          }
+        },
+        {
+          "name": "Confirm Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is OK', function () {",
+                  "    pm.expect(pm.response.text()).to.include('OK');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ads/confirm/XAFRA_20250909_123456_abc12345",
+              "host": ["{{base_url}}"],
+              "path": ["ads", "confirm", "XAFRA_20250909_123456_abc12345"]
+            },
+            "description": "Confirma tracking sin autenticación. Usar el tracking ID exacto generado por el sistema."
+          }
+        },
+        {
+          "name": "Confirm Tracking with API Key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is OK', function () {",
+                  "    pm.expect(pm.response.text()).to.include('OK');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ads/v1/confirm/YOUR_API_KEY/XAFRA_20250909_123456_abc12345",
+              "host": ["{{base_url}}"],
+              "path": ["ads", "v1", "confirm", "YOUR_API_KEY", "XAFRA_20250909_123456_abc12345"]
+            },
+            "description": "Confirma tracking con autenticación por API key. Soporta GET y POST. Incluye validación de autorización."
+          }
+        },
+        {
+          "name": "Confirm Tracking with API Key (POST)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is OK', function () {",
+                  "    pm.expect(pm.response.text()).to.include('OK');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ads/v1/confirm/YOUR_API_KEY/XAFRA_20250909_123456_abc12345",
+              "host": ["{{base_url}}"],
+              "path": ["ads", "v1", "confirm", "YOUR_API_KEY", "XAFRA_20250909_123456_abc12345"]
+            },
+            "description": "Versión POST del endpoint de confirmación con API key. Mismo endpoint, diferentes métodos HTTP soportados."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Utility APIs",
+      "description": "Encryption and utility endpoints - CORREGIDO",
+      "item": [
+        {
+          "name": "Encrypt Data (POST) - Universal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains encrypted data', function () {",
+                  "    pm.expect(pm.response.text()).to.have.length.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "user",
+                "value": "{{encryption_user}}",
+                "description": "Usuario requerido para autenticación de encriptación"
+              },
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{{customer_id}}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/util/encryption",
+              "host": ["{{base_url}}"],
+              "path": ["util", "encryption"]
+            },
+            "description": "ÚNICA API de encriptación disponible. Puede encriptar customer_id, product_id o cualquier dato. Requiere header 'user' para autenticación. Respuesta: texto encriptado sin padding '=' y con '/' reemplazado por '$'."
+          }
+        },
+        {
+          "name": "Encrypt Product ID Example",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains encrypted product', function () {",
+                  "    pm.expect(pm.response.text()).to.have.length.greaterThan(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "user",
+                "value": "{{encryption_user}}"
+              },
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{{product_id}}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/util/encryption",
+              "host": ["{{base_url}}"],
+              "path": ["util", "encryption"]
+            },
+            "description": "Ejemplo de encriptación de product_id usando la misma API universal. Cambia el body por el product_id que necesites encriptar."
+          }
+        },
+        {
+          "name": "Get Base URL Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/util/get",
+              "host": ["{{base_url}}"],
+              "path": ["util", "get"]
+            },
+            "description": "Obtiene información sobre la URL base y headers del servidor"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🌍 Country & Operator Config",
+      "description": "Country and operator configuration APIs",
+      "item": [
+        {
+          "name": "Get Supported Countries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/config/countries",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "config", "countries"]
+            },
+            "description": "Get all supported countries"
+          }
+        },
+        {
+          "name": "Get All Operators",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/config/operators",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "config", "operators"]
+            },
+            "description": "Get all operators by country"
+          }
+        },
+        {
+          "name": "Get Operators by Country",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/config/operators/CR",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "config", "operators", "CR"]
+            },
+            "description": "Get operators for specific country (e.g., CR for Costa Rica)"
+          }
+        },
+        {
+          "name": "Validate Country-Operator",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/config/validate/CR/KOLBI",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "config", "validate", "CR", "KOLBI"]
+            },
+            "description": "Validate country-operator combination"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Short Tracking (Costa Rica Kolbi) - CORREGIDO",
+      "description": "Short tracking system specific for Costa Rica Kolbi operations",
+      "item": [
+        {
+          "name": "Configure Short Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains success', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apikey\": \"YOUR_API_KEY_HERE\",\n  \"original_tracking\": \"XAFRA_20250909_123456_abc12345\",\n  \"short_tracking\": \"KOL123\",\n  \"enabled\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/config/xafra",
+              "host": ["{{base_url}}"],
+              "path": ["api", "config", "xafra"]
+            },
+            "description": "Configura tracking corto para Costa Rica - Kolbi. Mapea un tracking original a un tracking corto. Solo funciona para country=CR y operator=Kolbi."
+          }
+        },
+        {
+          "name": "Confirm Sale by Short Tracking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains success', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/service/v1/confirm/short/YOUR_API_KEY/KOL123",
+              "host": ["{{base_url}}"],
+              "path": ["service", "v1", "confirm", "short", "YOUR_API_KEY", "KOL123"]
+            },
+            "description": "Confirma venta usando tracking corto. Busca la campaña por short_tracking y procesa la confirmación usando el tracking original."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🤖 Auto Subscribe - CORREGIDO",
+      "description": "Automated subscription processing with multiple parameter combinations",
+      "item": [
+        {
+          "name": "Auto Subscribe Basic",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains success message', function () {",
+                  "    pm.expect(pm.response.text()).to.include('Threads OK');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}"]
+            },
+            "description": "Auto subscribe básico. Defaults: hour=23, timeSleep=10, source=AA230, limit=null"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Hour",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/15",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "15"]
+            },
+            "description": "Auto subscribe con hora específica (15 = 3 PM). Defaults: timeSleep=10, source=AA230"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Time Sleep",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/ts/5",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "ts", "5"]
+            },
+            "description": "Auto subscribe con tiempo de espera (5 segundos). Defaults: hour=23, source=AA230"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Hour and Time",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/18/7",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "18", "7"]
+            },
+            "description": "Auto subscribe con hora (18=6PM) y tiempo sleep (7 seg). Default: source=AA230"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Source",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/s/FB001",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "s", "FB001"]
+            },
+            "description": "Auto subscribe con source personalizado (FB001). Defaults: hour=23, timeSleep=10"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Hour and Source",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/20/s/TW002",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "20", "s", "TW002"]
+            },
+            "description": "Auto subscribe con hora (20=8PM) y source (TW002). Default: timeSleep=10"
+          }
+        },
+        {
+          "name": "Auto Subscribe with Limit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/l/100",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "l", "100"]
+            },
+            "description": "Auto subscribe con límite de 100 subscripciones. Defaults: hour=23, timeSleep=10, source=AA230"
+          }
+        },
+        {
+          "name": "Auto Subscribe Complete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/auto/subscribe/{{product_id}}/22/5/IG003/50",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "auto", "subscribe", "{{product_id}}", "22", "5", "IG003", "50"]
+            },
+            "description": "Auto subscribe completo: hour=22 (10PM), timeSleep=5 seg, source=IG003, limit=50 subscripciones"
+          }
+        },
+        {
+          "name": "Ping Auto Subscribe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is pong', function () {",
+                  "    pm.expect(pm.response.text()).to.include('pong');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/v1/ping",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "ping"]
+            },
+            "description": "Health check del servicio auto subscribe - responde 'pong'"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🗄️ Database Management",
+      "description": "Database testing, migration and structure analysis",
+      "item": [
+        {
+          "name": "Test Database Connection",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/db/test-connection",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "db", "test-connection"]
+            },
+            "description": "Test database connectivity"
+          }
+        },
+        {
+          "name": "Analyze Table Structure",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/db/analyze-structure",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "db", "analyze-structure"]
+            },
+            "description": "Analyze existing table structures for country/operator fields"
+          }
+        },
+        {
+          "name": "Execute Country-Operator Migration",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/v1/migration/execute-country-operator",
+              "host": ["{{base_url}}"],
+              "path": ["v1", "migration", "execute-country-operator"]
+            },
+            "description": "Execute database migration for country and operator fields"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -14,4 +14,7 @@ public interface IProductAndCustomer {
 	public List<Customer> getAllCustomer();
 
 	public Customer getCustomerById(Long customerId);
+	
+	// NUEVO: Para redirección inteligente
+	public List<Product> getRandomProductsByCustomer(Long customerId);
 }

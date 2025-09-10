@@ -1,11 +1,21 @@
-# Usar imagen base de OpenJDK 17
+# Dockerfile multistage para compilar y ejecutar
+# Etapa 1: Build
+FROM maven:3.8.4-openjdk-17 as builder
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+# Compilar la aplicación
+RUN mvn clean package -DskipTests=true
+
+# Etapa 2: Runtime
 FROM openjdk:17-jdk-alpine
 
-# Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar el WAR ya compilado
-COPY target/ads-xafra.war app.war
+# Copiar el WAR compilado de la etapa anterior
+COPY --from=builder /app/target/ads-xafra.war app.war
 
 # Crear directorio de logs
 RUN mkdir -p /logs

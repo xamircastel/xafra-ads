@@ -40,4 +40,9 @@ public class ProductAndCustomerBo implements IProductAndCustomer {
 		return daoCustomer.getByCustomerId(customerId);
 	}
 
+	@Override
+	public List<Product> getRandomProductsByCustomer(Long customerId) {
+		return daoProd.getRandomProductsByCustomer(customerId);
+	}
+
 }

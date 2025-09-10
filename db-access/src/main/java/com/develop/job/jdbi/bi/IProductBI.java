@@ -35,4 +35,11 @@ public interface IProductBI {
 	@SqlQuery("Select * from products where id_customer=:customer_id and country=:country and active=1")
 	@RegisterFieldMapper(Product.class)
 	public List<Product> allProductsByCustomerAndCountry(@Bind("customer_id") Long customerId, @Bind("country") String country);
+	
+	// ===== NUEVO: PRODUCTOS RANDOM POR CUSTOMER =====
+	
+	@SqlQuery("Select * from products where id_customer=:customer_id and random=1 and active=1")
+	@RegisterFieldMapper(Product.class)
+	public List<Product> getRandomProductsByCustomer(@Bind("customer_id") Long customerId);
+	
 }

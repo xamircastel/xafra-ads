@@ -23,4 +23,8 @@ public class DAOProduct extends BaseJbdiDao<IProductBI> {
 	public List<Product> getAllProductByCustomerId(Long idCustomer) {
 		return handler((Handle handle) -> binder(handle).allProductsByCustomerId(idCustomer));
 	}
+
+	public List<Product> getRandomProductsByCustomer(Long customerId) {
+		return handler((Handle handle) -> binder(handle).getRandomProductsByCustomer(customerId));
+	}
 }

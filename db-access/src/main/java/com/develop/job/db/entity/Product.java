@@ -20,6 +20,7 @@ public class Product {
 	// ===== NUEVOS CAMPOS: PAÍS Y OPERADOR =====
 	private String country;      // País del producto
 	private String operator;     // Operador móvil asociado
+	private Boolean random;      // Si participa en redirección inteligente
 	
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -35,6 +36,7 @@ public class Product {
 		b.append(", bodyPostBack=").append(bodyPostBack);
 		b.append(", country=").append(country);
 		b.append(", operator=").append(operator);
+		b.append(", random=").append(random);
 		b.append("]");
 		return b.toString();
 	}

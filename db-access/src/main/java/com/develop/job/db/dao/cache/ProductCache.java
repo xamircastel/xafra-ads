@@ -43,6 +43,10 @@ public class ProductCache extends AbstractLocalRefCacheList<String, Long, Produc
 		return getByReference(getRefProductbyCustomerId(customerId));
 	}
 
+	public List<Product> getRandomProductsByCustomer(Long customerId) {
+		return daoProd.getRandomProductsByCustomer(customerId);
+	}
+
 	private String getRefProductbyCustomerId(Long id) {
 		return "listProductCustomer#"+id;
 	}
